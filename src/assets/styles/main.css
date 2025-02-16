@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+@utility container {
+  margin-inline: auto;
+}
+
+button {
+  @apply cursor-pointer disabled:opacity-20 disabled:cursor-default;
+}
