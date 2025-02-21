@@ -109,6 +109,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useCharacterStore } from '@/stores/characters'
+import { useBookStore } from '@/stores/book'
 import CharacterPreview from './CharacterPreview.vue'
 import BodyEditor from './steps/BodyEditor.vue'
 import FaceEditor from './steps/FaceEditor.vue'
@@ -151,6 +152,12 @@ const finishCharacter = () => {
       isComplete: true,
     })
     characterStore.resetCreation()
+    
+    // If we have max characters, set book store step to 2 (page editor)
+    if (characterStore.characters.length >= characterStore.MAX_CHARACTERS) {
+      const bookStore = useBookStore()
+      bookStore.currentStep = 2
+    }
   }
 }
 </script>
