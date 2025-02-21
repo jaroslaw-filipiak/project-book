@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Character } from '@/types/character'
+import { useCharacterStore } from '@/stores/characters'
 import CharacterList from './CharacterList.vue'
 import CharacterCreator from './CharacterCreator.vue'
 

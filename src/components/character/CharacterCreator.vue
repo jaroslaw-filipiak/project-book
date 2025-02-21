@@ -76,7 +76,11 @@
             {{ characterStore.isEditing ? 'Save Changes' : 'Finish Character' }}
           </button>
 
-          <button @click="characterStore.resetCreation" class="w-full p-2 border rounded">
+          <button 
+            v-if="characterStore.characters.length < characterStore.MAX_CHARACTERS"
+            @click="characterStore.resetCreation" 
+            class="w-full p-2 border rounded"
+          >
             Create Another Character
           </button>
         </div>
@@ -124,6 +128,11 @@ if (characterStore.isEditing && characterStore.currentCharacter) {
 
 const handleBasicInfo = () => {
   if (!isBasicInfoValid.value) return
+
+  if (characterStore.characters.length >= characterStore.MAX_CHARACTERS && !characterStore.isEditing) {
+    alert(`You can only create up to ${characterStore.MAX_CHARACTERS} characters`)
+    return
+  }
 
   if (characterStore.isEditing && characterStore.currentCharacter) {
     characterStore.updateCharacter(characterStore.currentCharacter.id, {
