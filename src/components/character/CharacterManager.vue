@@ -42,10 +42,10 @@ const emit = defineEmits<{
 
 const isCreating = ref(false)
 
-const MAX_CHARACTERS = 2
+const characterStore = useCharacterStore()
 
 const startCreating = () => {
-  if (props.characters.length >= MAX_CHARACTERS) {
+  if (props.characters.length >= characterStore.MAX_CHARACTERS) {
     // Emit event to parent to switch to book creation
     emit('max-characters-reached')
     return

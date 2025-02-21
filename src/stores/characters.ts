@@ -12,6 +12,7 @@ export interface Character {
 }
 
 export const useCharacterStore = defineStore('characters', () => {
+  const MAX_CHARACTERS = 2
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
   const currentCharacterId = ref<string | null>(null)
@@ -66,6 +67,7 @@ export const useCharacterStore = defineStore('characters', () => {
   }
 
   return {
+    MAX_CHARACTERS,
     characters,
     currentStep,
     currentCharacterId,
