@@ -6,7 +6,44 @@
 
       <!-- Creation/Edition steps -->
       <div class="flex-1">
-        <BasicInfo v-if="characterStore.currentStep === 1" />
+        <!-- Basic Info Step -->
+        <div v-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
+          <h3 class="text-center text-4xl mb-10">
+            {{ characterStore.isEditing ? 'Edytuj bohatera' : 'Krok 1 - Stwórz bohatera' }}
+          </h3>
+
+          <div class="max-w-md mx-auto">
+            <form @submit.prevent="handleBasicInfo" class="space-y-6">
+              <div class="form-group">
+                <label class="block text-sm font-medium mb-2">Imię</label>
+                <input v-model="name" type="text" required class="w-full p-2 border rounded" />
+              </div>
+
+              <div class="form-group">
+                <label class="block text-sm font-medium mb-2">Płeć</label>
+                <select
+                  v-model="sex"
+                  required
+                  class="w-full p-2 border rounded"
+                  :disabled="characterStore.isEditing"
+                >
+                  <option value="">Wybierz płeć</option>
+                  <option value="male">Chłopiec</option>
+                  <option value="female">Dziewczynka</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full p-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                :disabled="!isBasicInfoValid"
+              >
+                {{ characterStore.isEditing ? 'Zapisz zmiany' : 'Stwórz postać' }}
+              </button>
+            </form>
+          </div>
+        </div>
+
         <BodyEditor v-if="characterStore.currentStep === 2" />
         <FaceEditor v-if="characterStore.currentStep === 3" />
         <HairEditor v-if="characterStore.currentStep === 4" />
@@ -66,14 +103,38 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useCharacterStore } from '@/stores/characters'
 import CharacterPreview from './CharacterPreview.vue'
-import BasicInfo from './steps/BasicInfo.vue'
 import BodyEditor from './steps/BodyEditor.vue'
 import FaceEditor from './steps/FaceEditor.vue'
 import HairEditor from './steps/HairEditor.vue'
 
 const characterStore = useCharacterStore()
+const name = ref('')
+const sex = ref('')
+
+const isBasicInfoValid = computed(() => name.value.trim() && sex.value)
+
+// Initialize form if editing
+if (characterStore.isEditing && characterStore.currentCharacter) {
+  name.value = characterStore.currentCharacter.name
+  sex.value = characterStore.currentCharacter.sex
+}
+
+const handleBasicInfo = () => {
+  if (!isBasicInfoValid.value) return
+
+  if (characterStore.isEditing && characterStore.currentCharacter) {
+    characterStore.updateCharacter(characterStore.currentCharacter.id, {
+      name: name.value.trim(),
+      sex: sex.value as 'male' | 'female',
+    })
+    characterStore.nextStep()
+  } else {
+    characterStore.createCharacter(name.value.trim(), sex.value as 'male' | 'female')
+  }
+}
 
 const finishCharacter = () => {
   if (characterStore.currentCharacter) {
