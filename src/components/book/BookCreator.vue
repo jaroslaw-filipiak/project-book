@@ -17,7 +17,14 @@
     <div class="content-area">
       <!-- Character selection/creation step -->
       <div v-if="currentStep === 0">
-        <CharacterManager :characters="characters" @character-created="handleCharacterCreated" />
+        <CharacterManager 
+          :characters="characters" 
+          @character-created="handleCharacterCreated"
+          @max-characters-reached="nextStep"
+        />
+        <div v-if="characters.length > 0" class="mt-4 text-center text-sm text-gray-600">
+          {{ characters.length }}/2 characters created
+        </div>
       </div>
 
       <!-- Page editor step -->

@@ -37,11 +37,19 @@ const emit = defineEmits<{
   (e: 'character-created', character: Character): void
   (e: 'character-updated', character: Character): void
   (e: 'character-deleted', id: string): void
+  (e: 'max-characters-reached'): void
 }>()
 
 const isCreating = ref(false)
 
+const MAX_CHARACTERS = 2
+
 const startCreating = () => {
+  if (props.characters.length >= MAX_CHARACTERS) {
+    // Emit event to parent to switch to book creation
+    emit('max-characters-reached')
+    return
+  }
   isCreating.value = true
 }
 
