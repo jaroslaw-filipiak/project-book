@@ -18,12 +18,13 @@
       <!-- Character selection/creation step -->
       <div v-if="currentStep === 0">
         <CharacterManager 
-          :characters="characters" 
+          :characters="bookStore.characters" 
           @character-created="handleCharacterCreated"
           @max-characters-reached="nextStep"
+          @character-deleted="handleCharacterDeleted"
         />
-        <div v-if="characters.length > 0" class="mt-4 text-center text-sm text-gray-600">
-          {{ characters.length }}/2 characters created
+        <div class="mt-4 text-center text-sm text-gray-600">
+          {{ bookStore.characters.length }}/{{ bookStore.MAX_CHARACTERS }} characters created
         </div>
       </div>
 
@@ -89,6 +90,13 @@ const setStep = (step: number) => {
 
 const handleCharacterCreated = (character) => {
   bookStore.addCharacter(character)
+  if (bookStore.characters.length >= bookStore.MAX_CHARACTERS) {
+    nextStep()
+  }
+}
+
+const handleCharacterDeleted = (characterId: string) => {
+  bookStore.removeCharacter(characterId)
 }
 
 const handlePageUpdate = (pageData) => {

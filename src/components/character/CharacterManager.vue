@@ -46,7 +46,6 @@ const characterStore = useCharacterStore()
 
 const startCreating = () => {
   if (props.characters.length >= characterStore.MAX_CHARACTERS) {
-    // Emit event to parent to switch to book creation
     emit('max-characters-reached')
     return
   }

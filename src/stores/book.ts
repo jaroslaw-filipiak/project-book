@@ -4,6 +4,7 @@ import type { Character } from './characters'
 import type { BookPage, BookTemplate } from '@/types/book'
 
 export const useBookStore = defineStore('book', () => {
+  const MAX_CHARACTERS = 2
   const pages = ref<BookPage[]>([])
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
@@ -17,7 +18,13 @@ export const useBookStore = defineStore('book', () => {
   )
 
   function addCharacter(character: Character) {
-    characters.value.push(character)
+    if (characters.value.length < MAX_CHARACTERS) {
+      characters.value.push(character)
+    }
+  }
+
+  function removeCharacter(characterId: string) {
+    characters.value = characters.value.filter(char => char.id !== characterId)
   }
 
   function updatePage(index: number, pageData: Partial<BookPage>) {
@@ -87,6 +94,7 @@ export const useBookStore = defineStore('book', () => {
   }
 
   return {
+    MAX_CHARACTERS,
     pages,
     characters,
     currentStep,
