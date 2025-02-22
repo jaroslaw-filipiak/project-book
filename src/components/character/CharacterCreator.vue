@@ -132,27 +132,14 @@ import FaceEditor from './steps/FaceEditor.vue'
 import HairEditor from './steps/HairEditor.vue'
 
 const characterStore = useCharacterStore()
-const name = computed({
-  get: () => characterStore.currentCharacter?.name || '',
-  set: (value) => {
-    if (characterStore.currentCharacter) {
-      characterStore.updateCharacter(characterStore.currentCharacter.id, {
-        name: value.trim()
-      })
-    }
-  }
-})
+const name = ref('')
+const sex = ref('')
 
-const sex = computed({
-  get: () => characterStore.currentCharacter?.sex || '',
-  set: (value) => {
-    if (characterStore.currentCharacter) {
-      characterStore.updateCharacter(characterStore.currentCharacter.id, {
-        sex: value as 'male' | 'female'
-      })
-    }
-  }
-})
+// Initialize form if editing
+if (characterStore.isEditing && characterStore.currentCharacter) {
+  name.value = characterStore.currentCharacter.name
+  sex.value = characterStore.currentCharacter.sex
+}
 
 const isBasicInfoValid = computed(() => name.value.trim() && sex.value)
 
