@@ -12,7 +12,7 @@
           <h3 class="text-center text-4xl mb-6">Characters Complete!</h3>
           <p class="text-gray-600 mb-6">You have created the maximum number of characters.</p>
           <button 
-            @click="bookStore.nextStep"
+            @click="() => { bookStore.nextStep() }"
             class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition"
           >
             Continue to Story Creation
@@ -123,6 +123,7 @@
 import { ref, computed } from 'vue'
 import { useCharacterStore } from '@/stores/characters'
 import { useBookStore } from '@/stores/book'
+const bookStore = useBookStore()
 import CharacterPreview from './CharacterPreview.vue'
 import BodyEditor from './steps/BodyEditor.vue'
 import FaceEditor from './steps/FaceEditor.vue'
