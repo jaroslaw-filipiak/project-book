@@ -2,7 +2,15 @@
   <div class="container mx-auto p-4">
     <div class="max-w-2xl mx-auto">
       <div class="mb-8">
-        <h2 class="text-2xl font-bold mb-4">Przygotowanie historii</h2>
+        <div class="flex justify-between items-center mb-4">
+          <button
+            @click="bookStore.prevStep"
+            class="px-4 py-2 text-gray-600 hover:text-gray-800 flex items-center gap-2"
+          >
+            ← Back to Characters
+          </button>
+          <h2 class="text-2xl font-bold">Przygotowanie historii</h2>
+        </div>
         <div class="flex items-center gap-2 mb-4">
           <div 
             v-for="(step, index) in totalSteps" 
