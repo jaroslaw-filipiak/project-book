@@ -52,7 +52,7 @@
           <button
             v-for="option in currentQuestion.options"
             :key="option.id"
-            @click="selectAnswer(option.id)"
+            @click="() => selectAnswer(option.id)"
             class="p-4 border rounded-lg text-left hover:bg-gray-50 transition"
             :class="{'border-blue-500': selectedAnswer === option.id}"
           >
@@ -112,7 +112,9 @@ const selectedAnswer = computed({
 const canProceed = computed(() => selectedAnswer.value)
 
 const selectAnswer = (optionId: string) => {
-  selectedAnswer.value = optionId
+  if (currentCharacter.value) {
+    bookStore.setStoryAnswer(currentCharacter.value.id, currentStep.value, optionId)
+  }
 }
 
 const nextQuestion = () => {
