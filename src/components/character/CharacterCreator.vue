@@ -6,8 +6,21 @@
 
       <!-- Creation/Edition steps -->
       <div class="flex-1">
+        <!-- Info message when max characters reached -->
+        <div v-if="characterStore.characters.length >= characterStore.MAX_CHARACTERS && !characterStore.isEditing" 
+             class="border rounded-lg p-6 text-center">
+          <h3 class="text-center text-4xl mb-6">Characters Complete!</h3>
+          <p class="text-gray-600 mb-6">You have created the maximum number of characters.</p>
+          <button 
+            @click="bookStore.nextStep"
+            class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition"
+          >
+            Continue to Story Creation
+          </button>
+        </div>
+
         <!-- Basic Info Step -->
-        <div v-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
+        <div v-else-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
           <h3 class="text-center text-4xl mb-10">
             {{ characterStore.isEditing ? 'Edytuj bohatera' : 'Krok 1 - Stwórz bohatera' }}
           </h3>
