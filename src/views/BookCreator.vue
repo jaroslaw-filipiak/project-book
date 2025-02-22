@@ -24,41 +24,52 @@
                 </button>
               </div>
 
-              <!-- Basic Info Step -->
+              <!-- Basic Info Step or Create Another Character button -->
               <div v-else-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
-                <h3 class="text-center text-4xl mb-10">
-                  {{ characterStore.isEditing ? 'Edytuj bohatera' : 'Krok 1 - Stwórz bohatera' }}
-                </h3>
+                <div v-if="!characterStore.isEditing && characterStore.characters.length > 0" class="text-center">
+                  <button 
+                    @click="startNewCharacter"
+                    class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                  >
+                    Create Another Character
+                  </button>
+                </div>
+                
+                <div v-else>
+                  <h3 class="text-center text-4xl mb-10">
+                    {{ characterStore.isEditing ? 'Edytuj bohatera' : 'Krok 1 - Stwórz bohatera' }}
+                  </h3>
 
-                <div class="max-w-md mx-auto">
-                  <form @submit.prevent="handleBasicInfo" class="space-y-6">
-                    <div class="form-group">
-                      <label class="block text-sm font-medium mb-2">Imię</label>
-                      <input v-model="name" type="text" required class="w-full p-2 border rounded" />
-                    </div>
+                  <div class="max-w-md mx-auto">
+                    <form @submit.prevent="handleBasicInfo" class="space-y-6">
+                      <div class="form-group">
+                        <label class="block text-sm font-medium mb-2">Imię</label>
+                        <input v-model="name" type="text" required class="w-full p-2 border rounded" />
+                      </div>
 
-                    <div class="form-group">
-                      <label class="block text-sm font-medium mb-2">Płeć</label>
-                      <select
-                        v-model="sex"
-                        required
-                        class="w-full p-2 border rounded"
-                        :disabled="characterStore.isEditing"
+                      <div class="form-group">
+                        <label class="block text-sm font-medium mb-2">Płeć</label>
+                        <select
+                          v-model="sex"
+                          required
+                          class="w-full p-2 border rounded"
+                          :disabled="characterStore.isEditing"
+                        >
+                          <option value="">Wybierz płeć</option>
+                          <option value="male">Chłopiec</option>
+                          <option value="female">Dziewczynka</option>
+                        </select>
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="w-full p-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        :disabled="!isBasicInfoValid"
                       >
-                        <option value="">Wybierz płeć</option>
-                        <option value="male">Chłopiec</option>
-                        <option value="female">Dziewczynka</option>
-                      </select>
-                    </div>
-
-                    <button
-                      type="submit"
-                      class="w-full p-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                      :disabled="!isBasicInfoValid"
-                    >
-                      {{ characterStore.isEditing ? 'Zapisz zmiany' : 'Stwórz postać' }}
-                    </button>
-                  </form>
+                        {{ characterStore.isEditing ? 'Zapisz zmiany' : 'Stwórz postać' }}
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
 
@@ -168,6 +179,12 @@ const handleBasicInfo = () => {
   }
   
   characterStore.nextStep()
+}
+
+const startNewCharacter = () => {
+  name.value = ''
+  sex.value = ''
+  characterStore.resetCreation()
 }
 
 const finishCharacter = () => {
