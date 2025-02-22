@@ -95,6 +95,7 @@ export const useBookStore = defineStore('book', () => {
     pages,
     characters,
     currentStep,
+    currentStoryStep,
     maxPages,
     saving,
     isComplete,
@@ -110,6 +111,7 @@ export const useBookStore = defineStore('book', () => {
     finalizeBook,
     nextStep,
     prevStep,
-    setStoryAnswers,
+    setStoryAnswer,
+    getCurrentStoryAnswer
   }
 })
