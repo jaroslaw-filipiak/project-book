@@ -79,33 +79,6 @@ export const useBookStore = defineStore('book', () => {
     }
   }
 
-  const storyAnswers = ref<Record<string, Record<string, string>>>({}) // characterId -> {step: answerId}
-  const currentStoryStep = ref(1)
-  const currentStoryCharacterId = ref<string | null>(null)
-
-  function setStoryAnswer(characterId: string, step: number, answerId: string) {
-    if (!storyAnswers.value[characterId]) {
-      storyAnswers.value[characterId] = {}
-    }
-    storyAnswers.value[characterId][step.toString()] = answerId
-  }
-
-  function getCurrentStoryAnswer(characterId: string, step: number): string {
-    return storyAnswers.value[characterId]?.[step.toString()] || ''
-  }
-
-  function setCurrentStoryCharacter(characterId: string) {
-    currentStoryCharacterId.value = characterId
-  }
-
-  function isCharacterStoryComplete(characterId: string): boolean {
-    const answers = storyAnswers.value[characterId] || {}
-    return Object.keys(answers).length === storyQuestions.length
-  }
-
-  function areAllStoriesComplete(): boolean {
-    return characters.value.every(char => isCharacterStoryComplete(char.id))
-  }
 
   return {
     MAX_CHARACTERS,

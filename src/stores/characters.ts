@@ -9,9 +9,32 @@ export const useCharacterStore = defineStore('characters', () => {
   const currentCharacterId = ref<string | null>(null)
   const isEditing = ref(false)
 
+  const storyAnswers = ref<Record<string, Record<string, string>>>({}) // characterId -> {step: answerId}
+  const currentStoryStep = ref(1)
+
   const currentCharacter = computed(() =>
     characters.value.find((char) => char.id === currentCharacterId.value),
   )
+
+  function setStoryAnswer(characterId: string, step: number, answerId: string) {
+    if (!storyAnswers.value[characterId]) {
+      storyAnswers.value[characterId] = {}
+    }
+    storyAnswers.value[characterId][step.toString()] = answerId
+  }
+
+  function getCurrentStoryAnswer(characterId: string, step: number): string {
+    return storyAnswers.value[characterId]?.[step.toString()] || ''
+  }
+
+  function isCharacterStoryComplete(characterId: string): boolean {
+    const answers = storyAnswers.value[characterId] || {}
+    return Object.keys(answers).length === storyQuestions.length
+  }
+
+  function areAllStoriesComplete(): boolean {
+    return characters.value.every(char => isCharacterStoryComplete(char.id))
+  }
 
   const createCharacter = (name: string, sex: 'male' | 'female') => {
     const newCharacter: Character = {
@@ -63,6 +86,7 @@ export const useCharacterStore = defineStore('characters', () => {
     currentStep,
     currentCharacterId,
     currentCharacter,
+    currentStoryStep,
     isEditing,
     createCharacter,
     updateCharacter,
@@ -70,5 +94,10 @@ export const useCharacterStore = defineStore('characters', () => {
     nextStep,
     previousStep,
     resetCreation,
+    setStoryAnswer,
+    getCurrentStoryAnswer,
+    isCharacterStoryComplete,
+    areAllStoriesComplete,
+    storyAnswers
   }
 })

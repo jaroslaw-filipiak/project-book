@@ -11,14 +11,14 @@
           </button>
           <h2 class="text-2xl font-bold">
             Przygotowanie historii dla "{{ currentCharacter?.name || '' }}" 
-            ({{ currentCharacterIndex + 1 }} z {{ bookStore.characters.length }})
+            ({{ currentCharacterIndex + 1 }} z {{ characterStore.characters.length }})
           </h2>
         </div>
         
         <!-- Character selector -->
         <div class="flex justify-center gap-4 mb-6">
           <button
-            v-for="(char, index) in bookStore.characters"
+            v-for="(char, index) in characterStore.characters"
             :key="char.id"
             @click="currentCharacterIndex = index"
             class="px-4 py-2 rounded-full"
@@ -26,7 +26,7 @@
               currentCharacterIndex === index 
                 ? 'bg-blue-500 text-white' 
                 : 'bg-gray-200 hover:bg-gray-300',
-              bookStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
+              characterStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
             ]"
           >
             {{ char.name }}
@@ -85,9 +85,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useBookStore } from '@/stores/book'
+import { useCharacterStore } from '@/stores/characters'
 import { storyQuestions } from '@/data/storyQuestions'
 
 const bookStore = useBookStore()
+const characterStore = useCharacterStore()
 const totalSteps = storyQuestions.length
 
 const currentStep = computed({
@@ -99,17 +101,11 @@ const currentQuestion = computed(() => storyQuestions[currentStep.value - 1])
 const isLastStep = computed(() => currentStep.value === totalSteps)
 
 const currentCharacterIndex = ref(0)
-const currentCharacter = computed(() => {
-  const char = bookStore.characters[currentCharacterIndex.value]
-  if (char) {
-    bookStore.setCurrentStoryCharacter(char.id)
-  }
-  return char
-})
+const currentCharacter = computed(() => characterStore.characters[currentCharacterIndex.value])
 
 const selectedAnswer = computed(() => 
   currentCharacter.value 
-    ? bookStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) 
+    ? characterStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) 
     : ''
 )
 
@@ -117,17 +113,17 @@ const canProceed = computed(() => selectedAnswer.value)
 
 const selectAnswer = (optionId: string) => {
   if (currentCharacter.value) {
-    bookStore.setStoryAnswer(currentCharacter.value.id, currentStep.value, optionId)
+    characterStore.setStoryAnswer(currentCharacter.value.id, currentStep.value, optionId)
   }
 }
 
 const nextQuestion = () => {
   if (isLastStep.value) {
-    if (currentCharacterIndex.value < bookStore.characters.length - 1) {
+    if (currentCharacterIndex.value < characterStore.characters.length - 1) {
       // Move to next character
       currentCharacterIndex.value++
       currentStep.value = 1
-    } else if (bookStore.areAllStoriesComplete()) {
+    } else if (characterStore.areAllStoriesComplete()) {
       // All characters are done, move to page editor
       bookStore.nextStep()
     }
