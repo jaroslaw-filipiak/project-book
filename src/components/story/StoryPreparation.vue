@@ -9,7 +9,28 @@
           >
             ← Back to Characters
           </button>
-          <h2 class="text-2xl font-bold">Przygotowanie historii</h2>
+          <h2 class="text-2xl font-bold">
+            Przygotowanie historii dla {{ currentCharacter?.name }}
+          </h2>
+        </div>
+        
+        <!-- Character selector -->
+        <div class="flex justify-center gap-4 mb-6">
+          {bookStore.characters.map((char, index) => (
+            <button
+              :key="char.id"
+              @click="currentCharacterIndex = index"
+              class="px-4 py-2 rounded-full"
+              :class="[
+                currentCharacterIndex === index 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-200 hover:bg-gray-300',
+                bookStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
+              ]"
+            >
+              {{ char.name }}
+            </button>
+          ))}
         </div>
         <div class="flex items-center gap-2 mb-4">
           <div 
@@ -77,9 +98,16 @@ const currentStep = computed({
 const currentQuestion = computed(() => storyQuestions[currentStep.value - 1])
 const isLastStep = computed(() => currentStep.value === totalSteps)
 
+const currentCharacterIndex = ref(0)
+const currentCharacter = computed(() => bookStore.characters[currentCharacterIndex.value])
+
 const selectedAnswer = computed({
-  get: () => bookStore.getCurrentStoryAnswer(currentStep.value),
-  set: (value: string) => bookStore.setStoryAnswer(currentStep.value, value)
+  get: () => currentCharacter.value ? bookStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) : '',
+  set: (value: string) => {
+    if (currentCharacter.value) {
+      bookStore.setStoryAnswer(currentCharacter.value.id, currentStep.value, value)
+    }
+  }
 })
 
 const canProceed = computed(() => selectedAnswer.value)
@@ -90,7 +118,14 @@ const selectAnswer = (optionId: string) => {
 
 const nextQuestion = () => {
   if (isLastStep.value) {
-    bookStore.nextStep() // Move to step 3 (PageEditor)
+    if (currentCharacterIndex.value < bookStore.characters.length - 1) {
+      // Move to next character
+      currentCharacterIndex.value++
+      currentStep.value = 1
+    } else if (bookStore.areAllStoriesComplete()) {
+      // All characters are done, move to page editor
+      bookStore.nextStep()
+    }
   } else {
     currentStep.value++
   }
