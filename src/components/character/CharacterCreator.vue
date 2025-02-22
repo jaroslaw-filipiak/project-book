@@ -6,11 +6,13 @@
 
       <!-- Creation/Edition steps -->
       <div class="flex-1">
-        <!-- Info message when max characters reached -->
-        <div v-if="characterStore.characters.length >= characterStore.MAX_CHARACTERS && !characterStore.isEditing" 
+        <!-- Info message when character is complete -->
+        <div v-if="characterStore.characters.length >= characterStore.MAX_CHARACTERS && 
+                   characterStore.characters.every(char => char.isComplete) && 
+                   !characterStore.isEditing" 
              class="border rounded-lg p-6 text-center">
           <h3 class="text-center text-4xl mb-6">Characters Complete!</h3>
-          <p class="text-gray-600 mb-6">You have created the maximum number of characters.</p>
+          <p class="text-gray-600 mb-6">Your character is ready for the story!</p>
           <button 
             @click="() => { bookStore.nextStep() }"
             class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition"
