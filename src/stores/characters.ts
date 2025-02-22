@@ -1,18 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
-export interface Character {
-  id: string
-  name: string
-  sex: 'male' | 'female'
-  body?: any
-  face?: any
-  hair?: any
-  isComplete: boolean
-}
+import type { Character } from '@/types/character'
 
 export const useCharacterStore = defineStore('characters', () => {
-  const MAX_CHARACTERS = 2
+  const MAX_CHARACTERS = 1
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
   const currentCharacterId = ref<string | null>(null)
