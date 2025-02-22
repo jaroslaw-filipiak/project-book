@@ -26,7 +26,7 @@
 
               <!-- Basic Info Step or Create Another Character button -->
               <div v-else-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
-                <div v-if="!characterStore.isEditing && characterStore.characters.length > 0" class="text-center">
+                <div v-if="!characterStore.isEditing && characterStore.characters.length > 0 && !showCreateForm" class="text-center">
                   <button 
                     @click="startNewCharacter"
                     class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
@@ -181,12 +181,13 @@ const handleBasicInfo = () => {
   characterStore.nextStep()
 }
 
+const showCreateForm = ref(false)
+
 const startNewCharacter = () => {
   name.value = ''
   sex.value = ''
   characterStore.resetCreation()
-  // Show the character creation form
-  characterStore.currentStep = 1
+  showCreateForm.value = true
 }
 
 const finishCharacter = () => {
