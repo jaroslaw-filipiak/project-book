@@ -2,7 +2,7 @@
   <div class="page-editor">
     <div class="editor-header">
       <button class="back-btn" @click="bookStore.prevStep">
-        Back to Characters
+        Back to Story
       </button>
     </div>
     <div class="template-selector">page editor</div>

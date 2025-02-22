@@ -75,7 +75,7 @@ const selectAnswer = (optionId: string) => {
 const nextQuestion = () => {
   if (isLastStep.value) {
     bookStore.setStoryAnswers(selectedAnswers.value)
-    bookStore.nextStep()
+    bookStore.nextStep() // This will move to step 3 (PageEditor)
   } else {
     currentStep.value++
   }
