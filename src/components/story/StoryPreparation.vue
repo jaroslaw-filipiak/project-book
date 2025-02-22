@@ -34,7 +34,7 @@
             :key="option.id"
             @click="selectAnswer(option.id)"
             class="p-4 border rounded-lg text-left hover:bg-gray-50 transition"
-            :class="{'border-blue-500': selectedAnswers[currentStep] === option.id}"
+            :class="{'border-blue-500': selectedAnswer === option.id}"
           >
             {{ option.text }}
           </button>
@@ -67,28 +67,29 @@ import { useBookStore } from '@/stores/book'
 import { storyQuestions } from '@/data/storyQuestions'
 
 const bookStore = useBookStore()
-const currentStep = ref(1)
-const selectedAnswers = ref<Record<number, string>>({})
-
 const totalSteps = storyQuestions.length
+
+const currentStep = computed({
+  get: () => bookStore.currentStoryStep,
+  set: (value: number) => bookStore.currentStoryStep = value
+})
 
 const currentQuestion = computed(() => storyQuestions[currentStep.value - 1])
 const isLastStep = computed(() => currentStep.value === totalSteps)
-const canProceed = computed(() => selectedAnswers.value[currentStep.value])
+
+const selectedAnswer = computed({
+  get: () => bookStore.getCurrentStoryAnswer(currentStep.value),
+  set: (value: string) => bookStore.setStoryAnswer(currentStep.value, value)
+})
+
+const canProceed = computed(() => selectedAnswer.value)
 
 const selectAnswer = (optionId: string) => {
-  selectedAnswers.value[currentStep.value] = optionId
+  selectedAnswer.value = optionId
 }
 
 const nextQuestion = () => {
   if (isLastStep.value) {
-    // Convert the numeric keys to strings and store answers
-    const formattedAnswers = Object.entries(selectedAnswers.value).reduce((acc, [key, value]) => {
-      acc[key.toString()] = value
-      return acc
-    }, {} as Record<string, string>)
-    
-    bookStore.setStoryAnswers(formattedAnswers)
     bookStore.nextStep() // Move to step 3 (PageEditor)
   } else {
     currentStep.value++

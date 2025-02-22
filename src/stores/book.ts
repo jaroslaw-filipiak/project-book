@@ -80,9 +80,14 @@ export const useBookStore = defineStore('book', () => {
   }
 
   const storyAnswers = ref<Record<string, string>>({})
+  const currentStoryStep = ref(1)
 
-  function setStoryAnswers(answers: Record<string, string>) {
-    storyAnswers.value = answers
+  function setStoryAnswer(step: number, answerId: string) {
+    storyAnswers.value[step.toString()] = answerId
+  }
+
+  function getCurrentStoryAnswer(step: number): string {
+    return storyAnswers.value[step.toString()] || ''
   }
 
   return {
