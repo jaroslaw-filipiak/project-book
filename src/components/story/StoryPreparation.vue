@@ -10,7 +10,8 @@
             ← Back to Characters
           </button>
           <h2 class="text-2xl font-bold">
-            Przygotowanie historii dla {{ currentCharacter?.name }}
+            Przygotowanie historii dla "{{ currentCharacter?.name || '' }}" 
+            ({{ currentCharacterIndex + 1 }} z {{ bookStore.characters.length }})
           </h2>
         </div>
         
@@ -52,9 +53,9 @@
           <button
             v-for="option in currentQuestion.options"
             :key="option.id"
-            @click="() => selectAnswer(option.id)"
-            class="p-4 border rounded-lg text-left hover:bg-gray-50 transition"
-            :class="{'border-blue-500': selectedAnswer === option.id}"
+            @click="selectAnswer(option.id)"
+            class="p-4 border rounded-lg text-left hover:bg-gray-50 transition cursor-pointer"
+            :class="{'border-blue-500 bg-blue-50': selectedAnswer === option.id}"
           >
             {{ option.text }}
           </button>
@@ -98,16 +99,19 @@ const currentQuestion = computed(() => storyQuestions[currentStep.value - 1])
 const isLastStep = computed(() => currentStep.value === totalSteps)
 
 const currentCharacterIndex = ref(0)
-const currentCharacter = computed(() => bookStore.characters[currentCharacterIndex.value])
-
-const selectedAnswer = computed({
-  get: () => currentCharacter.value ? bookStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) : '',
-  set: (value: string) => {
-    if (currentCharacter.value) {
-      bookStore.setStoryAnswer(currentCharacter.value.id, currentStep.value, value)
-    }
+const currentCharacter = computed(() => {
+  const char = bookStore.characters[currentCharacterIndex.value]
+  if (char) {
+    bookStore.setCurrentStoryCharacter(char.id)
   }
+  return char
 })
+
+const selectedAnswer = computed(() => 
+  currentCharacter.value 
+    ? bookStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) 
+    : ''
+)
 
 const canProceed = computed(() => selectedAnswer.value)
 
