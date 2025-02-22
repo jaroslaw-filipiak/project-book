@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Character } from '@/types/character'
+import { storyQuestions } from '@/data/storyQuestions'
 
 export const useCharacterStore = defineStore('characters', () => {
   const MAX_CHARACTERS = 2
