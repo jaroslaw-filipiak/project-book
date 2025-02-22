@@ -69,6 +69,7 @@ export const useBookStore = defineStore('book', () => {
   function nextStep() {
     if (currentStep.value < 3) {
       currentStep.value++
+      console.log('Moving to step:', currentStep.value) // Debug log
     }
   }
 

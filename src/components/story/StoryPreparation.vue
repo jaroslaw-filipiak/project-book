@@ -74,8 +74,14 @@ const selectAnswer = (optionId: string) => {
 
 const nextQuestion = () => {
   if (isLastStep.value) {
-    bookStore.setStoryAnswers(selectedAnswers.value)
-    bookStore.nextStep() // This will move to step 3 (PageEditor)
+    // Convert the numeric keys to strings and store answers
+    const formattedAnswers = Object.entries(selectedAnswers.value).reduce((acc, [key, value]) => {
+      acc[key.toString()] = value
+      return acc
+    }, {} as Record<string, string>)
+    
+    bookStore.setStoryAnswers(formattedAnswers)
+    bookStore.nextStep() // Move to step 3 (PageEditor)
   } else {
     currentStep.value++
   }
