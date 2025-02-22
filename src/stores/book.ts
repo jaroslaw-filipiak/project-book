@@ -1,21 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Character } from './characters'
-import type { BookPage, BookTemplate } from '@/types/book'
+import type { Character } from '@/types/character'
+import type { BookPage } from '@/types/book'
 
 export const useBookStore = defineStore('book', () => {
   const MAX_CHARACTERS = 2
   const pages = ref<BookPage[]>([])
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
-  const minPages = 6
   const maxPages = 12
   const saving = ref(false)
 
-  const isComplete = computed(() => 
-    pages.value.length >= minPages && 
-    characters.value.length > 0
-  )
+  const isComplete = computed(() => pages.value.length === maxPages && characters.value.length > 0)
 
   function addCharacter(character: Character) {
     if (characters.value.length < MAX_CHARACTERS) {
@@ -24,7 +20,7 @@ export const useBookStore = defineStore('book', () => {
   }
 
   function removeCharacter(characterId: string) {
-    characters.value = characters.value.filter(char => char.id !== characterId)
+    characters.value = characters.value.filter((char) => char.id !== characterId)
   }
 
   function updatePage(index: number, pageData: Partial<BookPage>) {
@@ -38,17 +34,6 @@ export const useBookStore = defineStore('book', () => {
   function getTemplateComponent(templateId: string) {
     // TODO: Implement dynamic template loading
     return null
-  }
-
-  function getTemplate(templateId: string): BookTemplate {
-    // TODO: Implement template retrieval
-    return {
-      id: templateId,
-      name: '',
-      characterPosition: {},
-      textPositions: {},
-      options: []
-    }
   }
 
   function getCharacterSvg(characterId: string, pose: string): string {
@@ -75,7 +60,7 @@ export const useBookStore = defineStore('book', () => {
     saving.value = true
     try {
       // TODO: Implement book finalization and saving
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     } finally {
       saving.value = false
     }
@@ -98,20 +83,19 @@ export const useBookStore = defineStore('book', () => {
     pages,
     characters,
     currentStep,
-    minPages,
     maxPages,
     saving,
     isComplete,
     addCharacter,
     updatePage,
     getTemplateComponent,
-    getTemplate,
     getCharacterSvg,
     getCharacterBodySvg,
     getCharacterFaceSvg,
     getCharacterHairSvg,
+    removeCharacter,
     finalizeBook,
     nextStep,
-    prevStep
+    prevStep,
   }
 })
