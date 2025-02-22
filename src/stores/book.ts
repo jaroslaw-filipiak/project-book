@@ -8,6 +8,7 @@ export const useBookStore = defineStore('book', () => {
   const pages = ref<BookPage[]>([])
   const characters = ref<Character[]>([])
   const currentStep = ref(1) // 1: Characters, 2: Story, 3: Pages
+  const currentStoryStep = ref(1)
   const maxPages = 12
   const saving = ref(false)
 
@@ -89,7 +90,6 @@ export const useBookStore = defineStore('book', () => {
     maxPages,
     saving,
     isComplete,
-    storyAnswers,
     addCharacter,
     updatePage,
     getTemplateComponent,
