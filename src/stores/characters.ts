@@ -4,7 +4,7 @@ import type { Character } from '@/types/character'
 import { storyQuestions } from '@/data/storyQuestions'
 
 export const useCharacterStore = defineStore('characters', () => {
-  const MAX_CHARACTERS = 2
+  const MAX_CHARACTERS = 1
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
   const currentCharacterId = ref<string | null>(null)
@@ -34,7 +34,7 @@ export const useCharacterStore = defineStore('characters', () => {
   }
 
   function areAllStoriesComplete(): boolean {
-    return characters.value.every(char => isCharacterStoryComplete(char.id))
+    return characters.value.every((char) => isCharacterStoryComplete(char.id))
   }
 
   const createCharacter = (name: string, sex: 'male' | 'female') => {
@@ -99,6 +99,6 @@ export const useCharacterStore = defineStore('characters', () => {
     getCurrentStoryAnswer,
     isCharacterStoryComplete,
     areAllStoriesComplete,
-    storyAnswers
+    storyAnswers,
   }
 })
