@@ -100,8 +100,6 @@ export const useBookStore = defineStore('book', () => {
     removeCharacter,
     finalizeBook,
     nextStep,
-    prevStep,
-    setStoryAnswer,
-    getCurrentStoryAnswer
+    prevStep
   }
 })
