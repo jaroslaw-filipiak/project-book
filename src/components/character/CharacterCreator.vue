@@ -165,6 +165,10 @@ const finishCharacter = () => {
     })
     characterStore.resetCreation()
     
+    // Reset form inputs
+    name.value = ''
+    sex.value = ''
+    
     // Move to story preparation when character is complete
     bookStore.nextStep()
   }
