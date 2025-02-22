@@ -185,6 +185,8 @@ const startNewCharacter = () => {
   name.value = ''
   sex.value = ''
   characterStore.resetCreation()
+  // Show the character creation form
+  characterStore.currentStep = 1
 }
 
 const finishCharacter = () => {
