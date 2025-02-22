@@ -16,21 +16,20 @@
         
         <!-- Character selector -->
         <div class="flex justify-center gap-4 mb-6">
-          {bookStore.characters.map((char, index) => (
-            <button
-              :key="char.id"
-              @click="currentCharacterIndex = index"
-              class="px-4 py-2 rounded-full"
-              :class="[
-                currentCharacterIndex === index 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-gray-200 hover:bg-gray-300',
-                bookStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
-              ]"
-            >
-              {{ char.name }}
-            </button>
-          ))}
+          <button
+            v-for="(char, index) in bookStore.characters"
+            :key="char.id"
+            @click="currentCharacterIndex = index"
+            class="px-4 py-2 rounded-full"
+            :class="[
+              currentCharacterIndex === index 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-200 hover:bg-gray-300',
+              bookStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
+            ]"
+          >
+            {{ char.name }}
+          </button>
         </div>
         <div class="flex items-center gap-2 mb-4">
           <div 

@@ -165,11 +165,8 @@ const finishCharacter = () => {
     })
     characterStore.resetCreation()
     
-    // If we have max characters, set book store step to 2 (page editor)
-    if (characterStore.characters.length >= characterStore.MAX_CHARACTERS) {
-      const bookStore = useBookStore()
-      bookStore.currentStep = 2
-    }
+    // Move to story preparation when character is complete
+    bookStore.nextStep()
   }
 }
 </script>
