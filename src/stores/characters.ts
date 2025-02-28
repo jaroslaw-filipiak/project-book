@@ -4,7 +4,7 @@ import type { Character } from '@/types/character'
 import { storyQuestions } from '@/data/storyQuestions'
 
 export const useCharacterStore = defineStore('characters', () => {
-  const MAX_CHARACTERS = 1
+  const MAX_CHARACTERS = 2
   const characters = ref<Character[]>([])
   const currentStep = ref(1)
   const currentCharacterId = ref<string | null>(null)

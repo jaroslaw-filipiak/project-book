@@ -80,7 +80,6 @@ export const useBookStore = defineStore('book', () => {
     }
   }
 
-
   return {
     MAX_CHARACTERS,
     pages,
@@ -100,6 +99,6 @@ export const useBookStore = defineStore('book', () => {
     removeCharacter,
     finalizeBook,
     nextStep,
-    prevStep
+    prevStep,
   }
 })

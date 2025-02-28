@@ -7,14 +7,22 @@
       <!-- Creation/Edition steps -->
       <div class="flex-1">
         <!-- Info message when character is complete -->
-        <div v-if="characterStore.characters.length >= characterStore.MAX_CHARACTERS && 
-                   characterStore.characters.every(char => char.isComplete) && 
-                   !characterStore.isEditing" 
-             class="border rounded-lg p-6 text-center">
+        <div
+          v-if="
+            characterStore.characters.length >= characterStore.MAX_CHARACTERS &&
+            characterStore.characters.every((char) => char.isComplete) &&
+            !characterStore.isEditing
+          "
+          class="border rounded-lg p-6 text-center"
+        >
           <h3 class="text-center text-4xl mb-6">Characters Complete!</h3>
           <p class="text-gray-600 mb-6">Your character is ready for the story!</p>
-          <button 
-            @click="() => { bookStore.nextStep() }"
+          <button
+            @click="
+              () => {
+                bookStore.nextStep()
+              }
+            "
             class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition"
           >
             Continue to Story Creation
@@ -91,12 +99,12 @@
             {{ characterStore.isEditing ? 'Save Changes' : 'Finish Character' }}
           </button>
 
-          <button 
-            v-if="characterStore.characters.length < characterStore.MAX_CHARACTERS"
-            @click="characterStore.resetCreation" 
+          <button
+            v-if="characterStore.characters.length <= characterStore.MAX_CHARACTERS"
+            @click="characterStore.resetCreation"
             class="w-full p-2 border rounded"
           >
-            Create Another Character
+            Stwórz nową postać
           </button>
         </div>
       </div>
@@ -146,7 +154,10 @@ const isBasicInfoValid = computed(() => name.value.trim() && sex.value)
 const handleBasicInfo = () => {
   if (!isBasicInfoValid.value) return
 
-  if (characterStore.characters.length >= characterStore.MAX_CHARACTERS && !characterStore.isEditing) {
+  if (
+    characterStore.characters.length >= characterStore.MAX_CHARACTERS &&
+    !characterStore.isEditing
+  ) {
     alert(`You can only create up to ${characterStore.MAX_CHARACTERS} characters`)
     return
   }
@@ -154,7 +165,7 @@ const handleBasicInfo = () => {
   if (!characterStore.isEditing) {
     characterStore.createCharacter(name.value.trim(), sex.value as 'male' | 'female')
   }
-  
+
   characterStore.nextStep()
 }
 
@@ -164,11 +175,11 @@ const finishCharacter = () => {
       isComplete: true,
     })
     characterStore.resetCreation()
-    
+
     // Reset form inputs
     name.value = ''
     sex.value = ''
-    
+
     // Move to story preparation when character is complete
     bookStore.nextStep()
   }

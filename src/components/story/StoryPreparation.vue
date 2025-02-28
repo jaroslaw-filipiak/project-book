@@ -10,36 +10,39 @@
             ← Back to Characters
           </button>
           <h2 class="text-2xl font-bold">
-            Przygotowanie historii dla "{{ currentCharacter?.name || '' }}" 
-            ({{ currentCharacterIndex + 1 }} z {{ characterStore.characters.length }})
+            Przygotowanie historii dla "{{ currentCharacter?.name || '' }}" ({{
+              currentCharacterIndex + 1
+            }}
+            z {{ characterStore.characters.length }})
           </h2>
         </div>
-        
+
         <!-- Character selector -->
-        <div class="flex justify-center gap-4 mb-6">
+        <!-- <div class="flex justify-center gap-4 mb-6">
           <button
             v-for="(char, index) in characterStore.characters"
             :key="char.id"
             @click="currentCharacterIndex = index"
-            class="px-4 py-2 rounded-full"
+            class="px-4 py-2 rounded-full pointer-none"
             :class="[
-              currentCharacterIndex === index 
-                ? 'bg-blue-500 text-white' 
+              currentCharacterIndex === index
+                ? 'bg-blue-500 text-white'
                 : 'bg-gray-200 hover:bg-gray-300',
-              characterStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : ''
+              characterStore.isCharacterStoryComplete(char.id) ? 'ring-2 ring-green-500' : '',
             ]"
           >
             {{ char.name }}
           </button>
-        </div>
+        </div> -->
+
         <div class="flex items-center gap-2 mb-4">
-          <div 
-            v-for="(step, index) in totalSteps" 
+          <div
+            v-for="(step, index) in totalSteps"
             :key="index"
             class="w-8 h-8 rounded-full flex items-center justify-center"
             :class="[
               currentStep === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200',
-              index < currentStep ? 'bg-green-500 text-white' : ''
+              index < currentStep ? 'bg-green-500 text-white' : '',
             ]"
           >
             {{ index + 1 }}
@@ -55,7 +58,7 @@
             :key="option.id"
             @click="selectAnswer(option.id)"
             class="p-4 border rounded-lg text-left hover:bg-gray-50 transition cursor-pointer"
-            :class="{'border-blue-500 bg-blue-50': selectedAnswer === option.id}"
+            :class="{ 'border-blue-500 bg-blue-50': selectedAnswer === option.id }"
           >
             {{ option.text }}
           </button>
@@ -94,7 +97,7 @@ const totalSteps = storyQuestions.length
 
 const currentStep = computed({
   get: () => bookStore.currentStoryStep,
-  set: (value: number) => bookStore.currentStoryStep = value
+  set: (value: number) => (bookStore.currentStoryStep = value),
 })
 
 const currentQuestion = computed(() => storyQuestions[currentStep.value - 1])
@@ -103,10 +106,10 @@ const isLastStep = computed(() => currentStep.value === totalSteps)
 const currentCharacterIndex = ref(0)
 const currentCharacter = computed(() => characterStore.characters[currentCharacterIndex.value])
 
-const selectedAnswer = computed(() => 
-  currentCharacter.value 
-    ? characterStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value) 
-    : ''
+const selectedAnswer = computed(() =>
+  currentCharacter.value
+    ? characterStore.getCurrentStoryAnswer(currentCharacter.value.id, currentStep.value)
+    : '',
 )
 
 const canProceed = computed(() => selectedAnswer.value)

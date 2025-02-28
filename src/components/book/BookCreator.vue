@@ -17,8 +17,8 @@
     <div class="content-area">
       <!-- Character selection/creation step -->
       <div v-if="currentStep === 0">
-        <CharacterManager 
-          :characters="bookStore.characters" 
+        <CharacterManager
+          :characters="bookStore.characters"
           @character-created="handleCharacterCreated"
           @max-characters-reached="nextStep"
           @character-deleted="handleCharacterDeleted"

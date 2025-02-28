@@ -5,36 +5,34 @@
         <div class="container mx-auto p-4">
           <div class="flex flex-col items-center gap-8">
             <!-- CharacterPreview -->
-            <CharacterPreview :character="characterStore.currentCharacter" />
+            <!-- <CharacterPreview :character="characterStore.currentCharacter" /> -->
 
             <!-- Creation/Edition steps -->
             <div class="flex-1">
-              <!-- Info message when character is complete -->
-              <div v-if="characterStore.characters.length >= characterStore.MAX_CHARACTERS && 
-                        characterStore.characters.every(char => char.isComplete) && 
-                        !characterStore.isEditing" 
-                  class="border rounded-lg p-6 text-center">
-                <h3 class="text-center text-4xl mb-6">Characters Complete!</h3>
-                <p class="text-gray-600 mb-6">Your character is ready for the story!</p>
-                <button 
-                  @click="() => { bookStore.nextStep() }"
-                  class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition"
-                >
-                  Continue to Story Creation
-                </button>
-              </div>
-
               <!-- Basic Info Step or Create Another Character button -->
-              <div v-else-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
-                <div v-if="!characterStore.isEditing && characterStore.characters.length > 0 && !showCreateForm" class="text-center">
-                  <button 
-                    @click="startNewCharacter"
-                    class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                  >
-                    Create Another Character
-                  </button>
+              <div v-if="characterStore.currentStep === 1" class="border rounded-lg p-6">
+                <div
+                  v-if="
+                    !characterStore.isEditing &&
+                    characterStore.characters.length > 0 &&
+                    !showCreateForm
+                  "
+                  class="text-center"
+                >
+                  <div v-if="characterStore.characters.length === characterStore.MAX_CHARACTERS">
+                    Gratulacje! Utworzyłeś wszystkich bohaterów
+                  </div>
+
+                  <div v-else>
+                    <button
+                      @click="startNewCharacter"
+                      class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    >
+                      Stwórz kolejnego bohatera
+                    </button>
+                  </div>
                 </div>
-                
+
                 <div v-else>
                   <h3 class="text-center text-4xl mb-10">
                     {{ characterStore.isEditing ? 'Edytuj bohatera' : 'Krok 1 - Stwórz bohatera' }}
@@ -44,7 +42,12 @@
                     <form @submit.prevent="handleBasicInfo" class="space-y-6">
                       <div class="form-group">
                         <label class="block text-sm font-medium mb-2">Imię</label>
-                        <input v-model="name" type="text" required class="w-full p-2 border rounded" />
+                        <input
+                          v-model="name"
+                          type="text"
+                          required
+                          class="w-full p-2 border rounded"
+                        />
                       </div>
 
                       <div class="form-group">
@@ -105,9 +108,9 @@
                   {{ characterStore.isEditing ? 'Save Changes' : 'Finish Character' }}
                 </button>
 
-                <button 
+                <button
                   v-if="characterStore.characters.length < characterStore.MAX_CHARACTERS"
-                  @click="characterStore.resetCreation" 
+                  @click="characterStore.resetCreation"
                   class="w-full p-2 border rounded"
                 >
                   Create Another Character
@@ -120,7 +123,11 @@
           <div class="mt-8" v-if="characterStore.characters.length > 0">
             <h3 class="text-xl font-bold mb-4">Created Characters</h3>
             <div class="flex gap-4 flex-wrap">
-              <div v-for="character in characterStore.characters" :key="character.id" class="relative">
+              <div
+                v-for="character in characterStore.characters"
+                :key="character.id"
+                class="relative"
+              >
                 <CharacterPreview :character="character" />
                 <button
                   @click="characterStore.startEditing(character.id)"
@@ -132,6 +139,7 @@
               </div>
             </div>
           </div>
+          <!-- Character list END -->
         </div>
       </div>
       <StoryPreparation v-if="bookStore.currentStep === 2" />
@@ -169,7 +177,10 @@ const isBasicInfoValid = computed(() => name.value.trim() && sex.value)
 const handleBasicInfo = () => {
   if (!isBasicInfoValid.value) return
 
-  if (characterStore.characters.length >= characterStore.MAX_CHARACTERS && !characterStore.isEditing) {
+  if (
+    characterStore.characters.length >= characterStore.MAX_CHARACTERS &&
+    !characterStore.isEditing
+  ) {
     alert(`You can only create up to ${characterStore.MAX_CHARACTERS} characters`)
     return
   }
@@ -177,7 +188,7 @@ const handleBasicInfo = () => {
   if (!characterStore.isEditing) {
     characterStore.createCharacter(name.value.trim(), sex.value as 'male' | 'female')
   }
-  
+
   characterStore.nextStep()
 }
 
@@ -196,7 +207,7 @@ const finishCharacter = () => {
       isComplete: true,
     })
     characterStore.resetCreation()
-    
+
     // If we have max characters, move to story preparation
     if (characterStore.characters.length >= characterStore.MAX_CHARACTERS) {
       bookStore.nextStep()
