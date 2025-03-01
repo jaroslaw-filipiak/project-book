@@ -1,7 +1,9 @@
 export interface BookPage {
   id: string
-  content: string
-  characters: string[]
-  background?: string
-  layout: string
+  templateId: string
+  content: {
+    text: Record<string, string>
+    options: string[]
+    characterPose: string
+  }
 }

@@ -1,18 +1,8 @@
-
 <template>
   <div class="character-manager">
     <div v-if="!isCreating" class="mb-8">
-      <CharacterList 
-        :characters="characters"
-        @edit="startEditing"
-        @delete="deleteCharacter"
-      />
-      <button 
-        @click="startCreating"
-        class="create-btn mt-4"
-      >
-        Create New Character
-      </button>
+      <CharacterList :characters="characters" @edit="startEditing" @delete="deleteCharacter" />
+      <button @click="startCreating" class="create-btn mt-4">Create New Character</button>
     </div>
 
     <CharacterCreator
@@ -26,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Character } from '@/types/character'
-import { useCharacterStore } from '@/stores/characters'
+import { useCharacterStore } from '@/stores/character'
 import CharacterList from './CharacterList.vue'
 import CharacterCreator from './CharacterCreator.vue'
 
@@ -54,7 +44,7 @@ const startCreating = () => {
 }
 
 const startEditing = (id: string) => {
-  const character = props.characters.find(c => c.id === id)
+  const character = props.characters.find((c) => c.id === id)
   if (character) {
     isCreating.value = true
     // TODO: Pass editing state to CharacterCreator
@@ -78,7 +68,7 @@ const deleteCharacter = (id: string) => {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  
+
   .create-btn {
     width: 100%;
     padding: 1rem;
@@ -86,7 +76,7 @@ const deleteCharacter = (id: string) => {
     color: white;
     border-radius: 8px;
     font-weight: bold;
-    
+
     &:hover {
       background: #3aa876;
     }
