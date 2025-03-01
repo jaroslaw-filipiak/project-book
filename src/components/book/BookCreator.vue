@@ -16,9 +16,24 @@
 
     <!-- Step 1: Character Creation -->
     <div v-if="bookStore.currentStep === 1">
-      <div class="mb-6">
+      <!-- no characters created -->
+      <div v-if="completedCharacters.length === 0" class="mb-6">
         <h2 class="text-2xl font-bold mb-4">Stwórz bohaterów do swojej książki</h2>
         <p class="text-gray-600">Utwórz {{ characterStore.MAX_CHARACTERS }} postacie</p>
+      </div>
+
+      <!-- is one character created -->
+      <div v-if="completedCharacters.length === 1" class="mb-6">
+        <h2 class="text-2xl font-bold mb-4">
+          Brawo! utworzyłeś już {{ completedCharacters.length }} postać ({{
+            characterStore.characters[0].name
+          }}
+          )
+        </h2>
+        <p class="text-gray-600">
+          Ilość postaci pozostała do utworzenia:
+          {{ characterStore.MAX_CHARACTERS - completedCharacters.length }}
+        </p>
       </div>
 
       <!-- Character slots grid with completed characters and next form -->

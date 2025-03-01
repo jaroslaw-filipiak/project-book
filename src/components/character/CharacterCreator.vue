@@ -6,14 +6,14 @@
       <div class="w-full md:w-1/3">
         <div class="sticky top-4">
           <div class="preview-card border rounded-lg overflow-hidden">
-            <h4 class="p-3 bg-gray-100 border-b font-medium">Character Preview</h4>
+            <h4 class="p-3 bg-gray-100 border-b font-medium">Podgląd postaci</h4>
             <div class="p-4">
               <CharacterPreview :character="characterStore.currentCharacter" />
 
               <div v-if="characterStore.currentCharacter" class="character-info mt-4">
                 <h3 class="font-bold">{{ characterStore.currentCharacter.name }}</h3>
                 <span class="gender-badge" :class="characterStore.currentCharacter.sex">
-                  {{ characterStore.currentCharacter.sex === 'male' ? 'Boy' : 'Girl' }}
+                  {{ characterStore.currentCharacter.sex === 'male' ? 'Chłopiec' : 'Dziewczynka' }}
                 </span>
               </div>
             </div>
@@ -26,7 +26,7 @@
               class="w-full p-2 border rounded"
               :disabled="characterStore.currentStep === 1"
             >
-              Previous Step
+              Poprzedni krok
             </button>
 
             <button
@@ -34,7 +34,7 @@
               @click="characterStore.nextStep"
               class="w-full p-2 border rounded bg-blue-500 text-white"
             >
-              Next Step
+              Następny krok
             </button>
 
             <button
@@ -42,16 +42,16 @@
               @click="finishCharacter"
               class="w-full p-2 border rounded bg-green-500 text-white"
             >
-              {{ characterStore.isEditing ? 'Save Changes' : 'Finish Character' }}
+              {{ characterStore.isEditing ? 'Zapisz zmiany' : 'Zapisz postać' }}
             </button>
 
-            <button
+            <!-- <button
               v-if="!characterStore.isEditing"
               @click="cancelCreation"
               class="w-full p-2 border rounded"
             >
-              Cancel
-            </button>
+              Anuluj
+            </button> -->
           </div>
         </div>
       </div>
