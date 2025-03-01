@@ -21,3 +21,24 @@ export interface StoryAnswer {
   questionId: string
   answerId: string
 }
+
+export interface CharacterFeature {
+  id: string
+  name: string
+  svg: string
+  forSex?: 'male' | 'female' | 'both'
+}
+
+export interface Character {
+  id: string
+  name: string
+  sex: 'male' | 'female'
+  isComplete: boolean
+  face?: CharacterFeature
+  eyes?: CharacterFeature
+  nose?: CharacterFeature
+  mouth?: CharacterFeature
+  hair?: CharacterFeature
+  body?: CharacterFeature
+  accessories?: CharacterFeature[]
+}

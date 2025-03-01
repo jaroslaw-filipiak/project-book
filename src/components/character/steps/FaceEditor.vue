@@ -1,28 +1,71 @@
 <template>
-  <div class="face-editor border rounded-lg p-6">
-    <h3 class="text-center text-2xl mb-6">Wybierz kształt twarzy</h3>
-
-    <div class="editor-grid grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="options-panel">
-        <!-- Face shape -->
-        <div class="form-group mb-6">
-          <label class="block text-sm font-medium mb-2">Face Shape</label>
-          <div class="flex gap-2">
-            <div
-              v-for="shape in faceShapes"
-              :key="shape.id"
-              :class="[
-                'option-item p-2 border rounded text-center cursor-pointer w-full',
-                { selected: selectedFace.shape === shape.id },
-              ]"
-              @click="updateFaceShape(characterStore.currentCharacter?.id, shape.id)"
-            >
-              <div class="icon-placeholder h-12 flex items-center justify-center text-2xl">
-                {{ shape.icon }}
-              </div>
-              <div class="text-xs mt-1">{{ shape.name }}</div>
-            </div>
-          </div>
+  <div class="face-editor">
+    <h2 class="text-xl font-bold mb-4">Wybierz twarz dla postaci</h2>
+    
+    <!-- Face Shape Selection -->
+    <div class="feature-section mb-8">
+      <h3 class="text-lg font-medium mb-3">Kształt twarzy</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div 
+          v-for="face in faceShapes" 
+          :key="face.id"
+          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
+                  {'border-blue-500 bg-blue-50': isSelected('face', face.id)}]"
+          @click="selectFeature('face', face)"
+        >
+          <div class="svg-container flex justify-center mb-2" v-html="face.svg"></div>
+          <div class="text-center text-sm">{{ face.name }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Eyes Selection -->
+    <div class="feature-section mb-8">
+      <h3 class="text-lg font-medium mb-3">Oczy</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div 
+          v-for="eyes in eyesOptions" 
+          :key="eyes.id"
+          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
+                  {'border-blue-500 bg-blue-50': isSelected('eyes', eyes.id)}]"
+          @click="selectFeature('eyes', eyes)"
+        >
+          <div class="svg-container flex justify-center mb-2" v-html="eyes.svg"></div>
+          <div class="text-center text-sm">{{ eyes.name }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Nose Selection -->
+    <div class="feature-section mb-8">
+      <h3 class="text-lg font-medium mb-3">Nos</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div 
+          v-for="nose in noseOptions" 
+          :key="nose.id"
+          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
+                  {'border-blue-500 bg-blue-50': isSelected('nose', nose.id)}]"
+          @click="selectFeature('nose', nose)"
+        >
+          <div class="svg-container flex justify-center mb-2" v-html="nose.svg"></div>
+          <div class="text-center text-sm">{{ nose.name }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mouth Selection -->
+    <div class="feature-section mb-8">
+      <h3 class="text-lg font-medium mb-3">Usta</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div 
+          v-for="mouth in mouthOptions" 
+          :key="mouth.id"
+          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
+                  {'border-blue-500 bg-blue-50': isSelected('mouth', mouth.id)}]"
+          @click="selectFeature('mouth', mouth)"
+        >
+          <div class="svg-container flex justify-center mb-2" v-html="mouth.svg"></div>
+          <div class="text-center text-sm">{{ mouth.name }}</div>
         </div>
       </div>
     </div>
@@ -30,74 +73,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
+import { faceShapes, eyesOptions, noseOptions, mouthOptions } from '@/constants/characterAssets'
+import type { CharacterFeature } from '@/types/book'
 
 const characterStore = useCharacterStore()
 
-// Sample face customization options
-const faceShapes = [
-  { id: 'round', name: 'Round', icon: '○' },
-  { id: 'oval', name: 'Oval', icon: '⬭' },
-  { id: 'square', name: 'Square', icon: '□' },
-  { id: 'heart', name: 'Heart', icon: '❤' },
-  { id: 'triangle', name: 'Triangle', icon: '△' },
-]
-
-// Define face type
-interface Face {
-  shape: string
+// Check if a feature is selected
+const isSelected = (featureType: string, featureId: string): boolean => {
+  const character = characterStore.currentCharacter
+  if (!character) return false
+  
+  const feature = character[featureType as keyof typeof character] as CharacterFeature | undefined
+  return feature?.id === featureId
 }
 
-// Current face settings
-const selectedFace = ref<Face>({
-  shape: 'round',
-})
-
-// Initialize from existing character data if available
-onMounted(() => {
-  const currentCharacter = characterStore.currentCharacter
-  if (currentCharacter?.face) {
-    selectedFace.value = { ...currentCharacter.face }
-  }
-})
-
-// Update face property
-const updateFaceShape = (characterId: string | undefined, shapeId: string) => {
-  selectedFace.value.shape = shapeId
-  if (characterId) {
-    characterStore.updateCharacter(characterId, { face: selectedFace.value })
-  }
+// Select a feature for the character
+const selectFeature = (featureType: 'face' | 'eyes' | 'nose' | 'mouth', feature: CharacterFeature) => {
+  characterStore.updateCharacterFeature(featureType, feature)
 }
+
+// Check if all face features are selected
+const isComplete = computed(() => {
+  const character = characterStore.currentCharacter
+  return character?.face && character?.eyes && character?.nose && character?.mouth
+})
 </script>
 
 <style scoped>
-.option-item {
-  transition: all 0.2s ease;
+.feature-option {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.option-item:hover {
-  border-color: #90cdf4;
-}
-
-.option-item.selected {
-  border-color: #3182ce;
-  background-color: #ebf8ff;
-}
-
-.color-option {
-  position: relative;
-  border: 2px solid transparent;
-  overflow: hidden;
-}
-
-.color-option.selected {
-  border-color: #3182ce;
-  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
-}
-
-.face-features {
-  font-size: 1.5rem;
-  line-height: 1;
+.svg-container {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

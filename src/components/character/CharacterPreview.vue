@@ -1,125 +1,78 @@
 <template>
-  <div class="character-preview">
-    <div class="preview-container">
-      <div v-if="!character" class="placeholder">
-        <span>No character selected</span>
-      </div>
-      <div v-else class="character-layers">
-        <!-- <div class="layer body" v-if="character.body" v-html="renderBody"></div>
-        <div class="layer face" v-if="character.face" v-html="renderFace"></div>
-        <div class="layer hair" v-if="character.hair" v-html="renderHair"></div> -->
-      </div>
+  <div class="character-preview" :style="{ transform: `scale(${scale})` }">
+    <!-- Character preview with layered SVG elements -->
+    <div v-if="character" class="character-container relative">
+      <!-- Face shape layer -->
+      <div v-if="character.face" class="face-layer absolute inset-0" v-html="character.face?.svg"></div>
+      
+      <!-- Eyes layer -->
+      <div v-if="character.eyes" class="eyes-layer absolute" 
+           style="top: 40%; left: 50%; transform: translate(-50%, -50%)" 
+           v-html="character.eyes?.svg"></div>
+      
+      <!-- Nose layer -->
+      <div v-if="character.nose" class="nose-layer absolute" 
+           style="top: 55%; left: 50%; transform: translate(-50%, -50%)" 
+           v-html="character.nose?.svg"></div>
+      
+      <!-- Mouth layer -->
+      <div v-if="character.mouth" class="mouth-layer absolute" 
+           style="top: 70%; left: 50%; transform: translate(-50%, -50%)" 
+           v-html="character.mouth?.svg"></div>
+      
+      <!-- Hair layer -->
+      <div v-if="character.hair" class="hair-layer absolute inset-0" v-html="character.hair?.svg"></div>
+      
+      <!-- Accessories layer -->
+      <div v-if="character.accessories && character.accessories.length > 0" 
+           class="accessories-layer absolute inset-0" 
+           v-for="accessory in character.accessories" :key="accessory.id"
+           v-html="accessory.svg"></div>
     </div>
-
-    <!-- <div v-if="character" class="character-info">
-      <h3>{{ character.name }}</h3>
-      <span class="gender-badge" :class="character.sex">
-        {{ character.sex === 'male' ? 'Chłopiec' : 'Dziewczynka' }}
-      </span>
-      <div v-if="character.isComplete" class="complete-badge">✓ Complete</div>
-    </div> -->
+    
+    <!-- Placeholder when no character data -->
+    <div v-else class="placeholder-character bg-gray-200 rounded-full h-24 w-24 flex items-center justify-center">
+      <span class="text-gray-400">?</span>
+    </div>
+    
+    <!-- Body part (separate from head) -->
+    <div v-if="character && character.body" class="body-layer mt-2" v-html="character.body?.svg"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Character } from '@/types/character'
+import { defineProps } from 'vue';
+import type { Character } from '@/types/book';
 
-import { useCharacterStore } from '@/stores/character'
-
-const characterStore = useCharacterStore()
-
+// Component props
 const props = defineProps<{
-  character?: Character
-}>()
+  character?: Character;
+  scale?: number;
+}>();
 
-// const renderBody = computed(() => {
-//   if (!props.character?.body) return ''
-//   return characterStore.getCharacterBodySvg(props.character.body)
-// })
-
-// const renderFace = computed(() => {
-//   if (!props.character?.face) return ''
-//   return characterStore.getCharacterFaceSvg(props.character.face)
-// })
-
-// const renderHair = computed(() => {
-//   if (!props.character?.hair) return ''
-//   return characterStore.getCharacterHairSvg(props.character.hair)
-// })
+// Default scale if not provided
+const scale = props.scale || 1;
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .character-preview {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+}
 
-  .preview-container {
-    aspect-ratio: 1;
-    background: #f5f5f5;
-    position: relative;
-    overflow: hidden;
+.character-container {
+  width: 150px;
+  height: 150px;
+  position: relative;
+}
 
-    .placeholder {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      font-size: 0.875rem;
-    }
-
-    .character-layers {
-      position: relative;
-      height: 100%;
-
-      .layer {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        :deep(svg) {
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-  }
-
-  .character-info {
-    padding: 1rem;
-
-    h3 {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .gender-badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-
-      &.male {
-        background: #e3f2fd;
-        color: #1976d2;
-      }
-
-      &.female {
-        background: #fce4ec;
-        color: #c2185b;
-      }
-    }
-
-    .complete-badge {
-      margin-top: 0.5rem;
-      color: #4caf50;
-      font-size: 0.875rem;
-    }
-  }
+.placeholder-character {
+  width: 150px;
+  height: 150px;
+  font-size: 3rem;
 }
 </style>

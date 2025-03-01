@@ -1,29 +1,20 @@
 <template>
-  <div class="body-editor border rounded-lg p-6">
-    <h3 class="text-center text-2xl mb-6">Rodzaj sylwetki</h3>
-
-    <div class="editor-grid grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Left: Options -->
-      <div class="options-panel">
-        <!-- Body type -->
-        <div class="form-group mb-6">
-          <label class="block text-sm font-medium mb-2">Body Type</label>
-          <div class="grid grid-cols-3 gap-2">
-            <div
-              v-for="type in bodyTypes"
-              :key="type.id"
-              :class="[
-                'option-item p-2 border rounded text-center cursor-pointer',
-                { selected: selectedBody.type === type.id },
-              ]"
-              @click="updateBody('type', type.id)"
-            >
-              <div class="icon-placeholder h-12 flex items-center justify-center text-2xl">
-                {{ type.icon }}
-              </div>
-              <div class="text-xs mt-1">{{ type.name }}</div>
-            </div>
-          </div>
+  <div class="body-editor">
+    <h2 class="text-xl font-bold mb-4">Wybierz ciało dla postaci</h2>
+    
+    <!-- Body Type Selection -->
+    <div class="feature-section mb-8">
+      <h3 class="text-lg font-medium mb-3">Typ ciała</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div 
+          v-for="body in bodyOptions" 
+          :key="body.id"
+          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
+                  {'border-blue-500 bg-blue-50': isSelected('body', body.id)}]"
+          @click="selectFeature('body', body)"
+        >
+          <div class="svg-container flex justify-center mb-2" v-html="body.svg"></div>
+          <div class="text-center text-sm">{{ body.name }}</div>
         </div>
       </div>
     </div>
@@ -31,67 +22,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
+import { bodyOptions } from '@/constants/characterAssets'
+import type { CharacterFeature } from '@/types/book'
 
 const characterStore = useCharacterStore()
 
-// Sample body customization options
-const bodyTypes = [
-  { id: 'average', name: 'Average', icon: '◯' },
-  { id: 'athletic', name: 'Athletic', icon: '▬' },
-  { id: 'slender', name: 'Slender', icon: '|' },
-]
-
-// Current body settings
-const selectedBody = ref({
-  type: 'average',
-})
-
-// Initialize from existing character data if available
-onMounted(() => {
-  const currentCharacter = characterStore.currentCharacter
-  if (currentCharacter?.body) {
-    selectedBody.value = { ...currentCharacter.body }
-  }
-})
-
-// Update body property
-const updateBody = (property: keyof typeof selectedBody.value, value: string) => {
-  selectedBody.value[property] = value
-  if (characterStore.currentCharacter) {
-    characterStore.updateCharacterFeature('body', { ...selectedBody.value })
-  }
+// Check if a feature is selected
+const isSelected = (featureType: string, featureId: string): boolean => {
+  const character = characterStore.currentCharacter
+  if (!character) return false
+  
+  const feature = character[featureType as keyof typeof character] as CharacterFeature | undefined
+  return feature?.id === featureId
 }
+
+// Select a feature for the character
+const selectFeature = (featureType: 'body', feature: CharacterFeature) => {
+  characterStore.updateCharacterFeature(featureType, feature)
+}
+
+// Check if body is selected
+const isComplete = computed(() => {
+  const character = characterStore.currentCharacter
+  return !!character?.body
+})
 </script>
 
 <style scoped>
-.option-item {
-  transition: all 0.2s ease;
+.feature-option {
+  aspect-ratio: 0.75;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.option-item:hover {
-  border-color: #90cdf4;
-}
-
-.option-item.selected {
-  border-color: #3182ce;
-  background-color: #ebf8ff;
-}
-
-.color-option {
-  position: relative;
-  border: 2px solid transparent;
-  overflow: hidden;
-}
-
-.color-option.selected {
-  border-color: #3182ce;
-  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
-}
-
-.body-figure {
-  transform: scale(var(--body-scale, 1));
-  transition: transform 0.2s ease;
+.svg-container {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

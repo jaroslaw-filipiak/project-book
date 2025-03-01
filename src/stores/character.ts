@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Character } from '@/types/character'
+import type { Character, CharacterFeature } from '@/types/book'
 
 export const useCharacterStore = defineStore('characters', () => {
   const MAX_CHARACTERS = 2
@@ -26,10 +26,7 @@ export const useCharacterStore = defineStore('characters', () => {
       id: crypto.randomUUID ? crypto.randomUUID() : `char_${Date.now()}`,
       name,
       sex,
-      isComplete: false,
-      body: null,
-      face: null,
-      hair: null,
+      isComplete: false
     }
     characters.value.push(newCharacter)
     currentCharacterId.value = newCharacter.id
@@ -57,7 +54,10 @@ export const useCharacterStore = defineStore('characters', () => {
   }
 
   // Update specific character feature
-  const updateCharacterFeature = (featureType: 'face' | 'body' | 'hair', featureData: any) => {
+  const updateCharacterFeature = (
+    featureType: 'face' | 'eyes' | 'nose' | 'mouth' | 'hair' | 'body' | 'accessories', 
+    featureData: CharacterFeature | CharacterFeature[] | null
+  ) => {
     if (currentCharacterId.value) {
       updateCharacter(currentCharacterId.value, {
         [featureType]: featureData,
@@ -68,7 +68,7 @@ export const useCharacterStore = defineStore('characters', () => {
   // Check if current character has completed all steps
   const isCurrentCharacterComplete = computed(() => {
     const char = currentCharacter.value
-    return char && char.face && char.body && char.hair
+    return char && char.face && char.eyes && char.nose && char.mouth && char.hair && char.body
   })
 
   // Set character as complete
