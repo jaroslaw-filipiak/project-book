@@ -1,8 +1,10 @@
 <template>
   <div class="story-preparation">
     <div class="mb-6">
-      <h2 class="text-2xl font-bold mb-4">Customize Your Story</h2>
-      <p class="text-gray-600">Answer questions for each character to personalize your story.</p>
+      <h2 class="text-2xl font-bold mb-4">Stwórz indywidualną historię</h2>
+      <p class="text-gray-600">
+        Uzupełnij pytania do każdej postaci aby zbudować swoją włąsną historię
+      </p>
     </div>
 
     <!-- Character selection tabs -->
