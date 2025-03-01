@@ -13,8 +13,43 @@ export const useBookStore = defineStore('book', () => {
   const saving = ref(false)
 
   // Story customization
-  const storyQuestions = ref<any[]>([]) // This would be imported from data/storyQuestions.js
+  const storyQuestions = ref<any[]>([
+    {
+      id: 'q1',
+      question: "What is your character's favorite activity?",
+      answers: [
+        { id: 'a1_1', text: 'Playing sports' },
+        { id: 'a1_2', text: 'Reading books' },
+        { id: 'a1_3', text: 'Drawing and painting' },
+        { id: 'a1_4', text: 'Playing music' },
+      ],
+    },
+    {
+      id: 'q2',
+      question: "What is your character's favorite place?",
+      answers: [
+        { id: 'a2_1', text: 'Mountains' },
+        { id: 'a2_2', text: 'Beach' },
+        { id: 'a2_3', text: 'Forest' },
+        { id: 'a2_4', text: 'City' },
+      ],
+    },
+    {
+      id: 'q3',
+      question: "What is your character's greatest wish?",
+      answers: [
+        { id: 'a3_1', text: 'To have an adventure' },
+        { id: 'a3_2', text: 'To make new friends' },
+        { id: 'a3_3', text: 'To discover a mystery' },
+        { id: 'a3_4', text: 'To learn a new skill' },
+      ],
+    },
+  ]) // Now we define the questions in the store
+
   const storyAnswers = ref<Record<string, Record<number, string>>>({}) // characterId -> {questionNumber: answerId}
+
+  // Current character for story creation
+  const currentStoryCharacterId = ref<string | null>(null)
 
   // Current question for each character
   const currentStoryStep = ref(1)
@@ -106,6 +141,7 @@ export const useBookStore = defineStore('book', () => {
     pages,
     currentStep,
     currentStoryStep,
+    currentStoryCharacterId,
     maxPages,
     saving,
     isComplete,

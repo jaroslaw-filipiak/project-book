@@ -7,16 +7,27 @@
       </p>
     </div>
 
-    <!-- Character selection tabs -->
-    <div class="character-tabs flex border-b mb-6">
-      <div
-        v-for="character in characterStore.characters"
-        :key="character.id"
-        :class="['character-tab px-6 py-3', { active: currentCharacterId === character.id }]"
-        @click="setCurrentCharacter(character.id)"
-      >
-        {{ character.name }}
-        <span v-if="isCharacterStoryComplete(character.id)" class="ml-2 text-green-500">✓</span>
+    <!-- Character info banner -->
+    <div
+      class="character-info-banner p-4 bg-blue-50 rounded-lg mb-6 flex items-center justify-between"
+    >
+      <div>
+        <h3 class="font-bold">Creating story for: {{ currentCharacter?.name }}</h3>
+        <p class="text-sm text-gray-600">
+          Character {{ currentCharacterIndex + 1 }} of {{ characterStore.characters.length }}
+        </p>
+      </div>
+      <CharacterPreview v-if="currentCharacter" :character="currentCharacter" :scale="0.5" />
+    </div>
+
+    <!-- Progress bar for overall story creation -->
+    <div class="mb-6">
+      <p class="text-sm text-gray-600 mb-1">Overall progress</p>
+      <div class="progress-bar h-2 bg-gray-200 rounded-full">
+        <div
+          class="progress h-full bg-green-500 rounded-full"
+          :style="{ width: `${overallProgressPercentage}%` }"
+        ></div>
       </div>
     </div>
 
@@ -25,18 +36,16 @@
       <div class="mb-6">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">
-            Question {{ bookStore.currentStoryStep }} of {{ storyQuestions.length }}
+            Question {{ bookStore.currentStoryStep }} of {{ bookStore.storyQuestions.length }}
           </h3>
-          <div class="character-badge flex items-center">
-            <span class="mr-2">{{ currentCharacter.name }}</span>
-            <CharacterPreview :character="currentCharacter" :scale="0.5" />
-          </div>
         </div>
 
         <div class="progress-bar h-2 bg-gray-200 rounded-full">
           <div
             class="progress h-full bg-blue-500 rounded-full"
-            :style="{ width: `${(bookStore.currentStoryStep / storyQuestions.length) * 100}%` }"
+            :style="{
+              width: `${(bookStore.currentStoryStep / bookStore.storyQuestions.length) * 100}%`,
+            }"
           ></div>
         </div>
       </div>
@@ -77,7 +86,7 @@
           class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           :disabled="!currentAnswer"
         >
-          {{ isLastQuestion ? 'Finish' : 'Next Question' }}
+          {{ isLastQuestion ? (isLastCharacter ? 'Finish' : 'Next Character') : 'Next Question' }}
         </button>
       </div>
     </div>
@@ -106,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useBookStore } from '@/stores/book'
 import { useCharacterStore } from '@/stores/character'
 import CharacterPreview from '@/components/character/CharacterPreview.vue'
@@ -114,72 +123,55 @@ import CharacterPreview from '@/components/character/CharacterPreview.vue'
 const bookStore = useBookStore()
 const characterStore = useCharacterStore()
 
-// Sample story questions (in a real app, this would be imported from data files)
-const storyQuestions = [
-  {
-    id: 'q1',
-    question: "What is your character's favorite activity?",
-    answers: [
-      { id: 'a1_1', text: 'Playing sports' },
-      { id: 'a1_2', text: 'Reading books' },
-      { id: 'a1_3', text: 'Drawing and painting' },
-      { id: 'a1_4', text: 'Playing music' },
-    ],
-  },
-  {
-    id: 'q2',
-    question: "What is your character's favorite place?",
-    answers: [
-      { id: 'a2_1', text: 'Mountains' },
-      { id: 'a2_2', text: 'Beach' },
-      { id: 'a2_3', text: 'Forest' },
-      { id: 'a2_4', text: 'City' },
-    ],
-  },
-  {
-    id: 'q3',
-    question: "What is your character's greatest wish?",
-    answers: [
-      { id: 'a3_1', text: 'To have an adventure' },
-      { id: 'a3_2', text: 'To make new friends' },
-      { id: 'a3_3', text: 'To discover a mystery' },
-      { id: 'a3_4', text: 'To learn a new skill' },
-    ],
-  },
-]
+// Calculate current character index
+const currentCharacterIndex = computed(() => {
+  if (!bookStore.currentStoryCharacterId) return 0
+  return characterStore.characters.findIndex(
+    (char) => char.id === bookStore.currentStoryCharacterId,
+  )
+})
 
-// Current character ID
-const currentCharacterId = ref('')
+// Check if this is the last character
+const isLastCharacter = computed(() => {
+  return currentCharacterIndex.value === characterStore.characters.length - 1
+})
 
-// Set initial character if available
-onMounted(() => {
-  if (characterStore.characters.length > 0) {
-    currentCharacterId.value = characterStore.characters[0].id
-  }
+// Overall progress percentage
+const overallProgressPercentage = computed(() => {
+  const totalQuestions = characterStore.characters.length * bookStore.storyQuestions.length
+  const answeredQuestions = Object.values(bookStore.storyAnswers).reduce((total, answers) => {
+    return total + Object.keys(answers).length
+  }, 0)
+
+  return (answeredQuestions / totalQuestions) * 100
 })
 
 // Get current character
 const currentCharacter = computed(() =>
-  characterStore.characters.find((char) => char.id === currentCharacterId.value),
+  characterStore.characters.find((char) => char.id === bookStore.currentStoryCharacterId),
 )
 
 // Get current question
 const currentQuestion = computed(
-  () => storyQuestions[bookStore.currentStoryStep - 1] || storyQuestions[0],
+  () => bookStore.storyQuestions[bookStore.currentStoryStep - 1] || bookStore.storyQuestions[0],
 )
 
 // Check if this is the last question
-const isLastQuestion = computed(() => bookStore.currentStoryStep === storyQuestions.length)
+const isLastQuestion = computed(
+  () => bookStore.currentStoryStep === bookStore.storyQuestions.length,
+)
 
 // Get current answer for this character and question
 const currentAnswer = computed(() =>
-  bookStore.getStoryAnswer(currentCharacterId.value, bookStore.currentStoryStep),
+  bookStore.getStoryAnswer(bookStore.currentStoryCharacterId || '', bookStore.currentStoryStep),
 )
 
-// Set current character
-const setCurrentCharacter = (characterId: string) => {
-  currentCharacterId.value = characterId
-}
+// Initialize the current character if not set
+onMounted(() => {
+  if (characterStore.characters.length > 0 && !bookStore.currentStoryCharacterId) {
+    bookStore.currentStoryCharacterId = characterStore.characters[0].id
+  }
+})
 
 // Check if an answer is selected
 const isAnswerSelected = (answerId: string) => {
@@ -188,72 +180,48 @@ const isAnswerSelected = (answerId: string) => {
 
 // Select an answer
 const selectAnswer = (answerId: string) => {
-  bookStore.saveStoryAnswer(currentCharacterId.value, bookStore.currentStoryStep, answerId)
-  // For debugging
-  debugAnswerSelection()
+  if (bookStore.currentStoryCharacterId) {
+    bookStore.saveStoryAnswer(
+      bookStore.currentStoryCharacterId,
+      bookStore.currentStoryStep,
+      answerId,
+    )
+  }
 }
 
-// Go to the next question or finish if last
+// Go to the next question or next character
 const goToNextQuestion = () => {
   // Only proceed if an answer has been selected
-  if (!currentAnswer.value) return
+  if (!currentAnswer.value || !bookStore.currentStoryCharacterId) return
 
   if (isLastQuestion.value) {
-    // If all characters have completed all questions, move to next step
-    if (areAllCharactersStoryComplete.value) {
-      bookStore.nextStep()
+    // If this is the last character, check if all are done
+    if (isLastCharacter.value) {
+      bookStore.nextStep() // Move to next main step (book design)
     } else {
-      // Find next character that hasn't completed questions
-      const nextCharacter = characterStore.characters.find(
-        (char) => !isCharacterStoryComplete(char.id) && char.id !== currentCharacterId.value,
-      )
-
-      if (nextCharacter) {
-        currentCharacterId.value = nextCharacter.id
-        bookStore.currentStoryStep = 1
+      // Move to the next character
+      const nextCharacterIndex = currentCharacterIndex.value + 1
+      if (nextCharacterIndex < characterStore.characters.length) {
+        bookStore.currentStoryCharacterId = characterStore.characters[nextCharacterIndex].id
+        bookStore.currentStoryStep = 1 // Reset to first question for new character
       }
     }
   } else {
+    // Just move to the next question for current character
     bookStore.nextStoryStep()
   }
 }
 
-// Check if a character has completed all questions
-const isCharacterStoryComplete = (characterId: string) => {
-  return bookStore.isCharacterStoryComplete(characterId)
-}
-
 // Check if all characters have completed their story questions
-const areAllCharactersStoryComplete = computed(() =>
-  characterStore.characters.every((char) => isCharacterStoryComplete(char.id)),
-)
-
-// Are all stories complete (convenience alias)
-const areAllStoriesComplete = computed(() => areAllCharactersStoryComplete.value)
-
-// Debug function to check what's happening with answer selection
-const debugAnswerSelection = () => {
-  console.log('Current character ID:', currentCharacterId.value)
-  console.log('Current step:', bookStore.currentStoryStep)
-  console.log('Current answer:', currentAnswer.value)
-  console.log('Question:', currentQuestion.value)
-  console.log('All answers:', bookStore.storyAnswers)
-}
+const areAllStoriesComplete = computed(() => {
+  return (
+    characterStore.characters.length > 0 &&
+    characterStore.characters.every((char) => bookStore.isCharacterStoryComplete(char.id))
+  )
+})
 </script>
 
 <style scoped>
-.character-tab {
-  cursor: pointer;
-  font-weight: 500;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.character-tab.active {
-  color: #2b6cb0;
-  border-bottom-color: #2b6cb0;
-}
-
 .answer-card {
   transition: all 0.2s ease;
 }
@@ -267,11 +235,7 @@ const debugAnswerSelection = () => {
   background-color: #ebf8ff;
 }
 
-.character-badge {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: 9999px;
-  background-color: #f7fafc;
+.character-info-banner {
+  border-left: 4px solid #3182ce;
 }
 </style>
