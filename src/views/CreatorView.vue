@@ -1,7 +1,7 @@
 <template>
   <div class="book-creator-view">
     <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-6">Create Your Personalized Book</h1>
+      <h1 class="text-3xl font-bold mb-6">Stwórz swoją niesamowitą historię!</h1>
 
       <!-- Main book creator component -->
       <BookCreator />

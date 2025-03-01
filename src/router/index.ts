@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // basic routes
     {
       path: '/',
       name: 'home',
@@ -24,6 +25,8 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue'),
     },
+
+    // kreator routes
     {
       path: '/kreator',
       redirect: '/kreator/postacie',
@@ -32,26 +35,28 @@ const router = createRouter({
       path: '/kreator/postacie',
       name: 'characters',
       component: () => import('../views/creator/CharactersView.vue'),
-      meta: { title: 'Create Characters' }
+      meta: { title: 'Create Characters' },
     },
     {
       path: '/kreator/historia',
       name: 'story',
       component: () => import('../views/creator/StoryView.vue'),
-      meta: { title: 'Create Story' }
+      meta: { title: 'Create Story' },
     },
     {
       path: '/kreator/strony',
       name: 'pages',
       component: () => import('../views/creator/PagesView.vue'),
-      meta: { title: 'Design Pages' }
+      meta: { title: 'Design Pages' },
     },
     {
       path: '/kreator/podsumowanie',
       name: 'summary',
       component: () => import('../views/creator/SummaryView.vue'),
-      meta: { title: 'Book Summary' }
+      meta: { title: 'Book Summary' },
     },
+
+    // admin routes (todo)
   ],
 })
 
