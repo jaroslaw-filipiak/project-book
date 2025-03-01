@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { BookPage } from '@/types/book'
+import type { BookPage, StoryQuestion } from '@/types/book'
 
 export const useBookStore = defineStore('book', () => {
   // Main flow steps
@@ -12,39 +12,98 @@ export const useBookStore = defineStore('book', () => {
   const maxPages = 12
   const saving = ref(false)
 
-  // Story customization
-  const storyQuestions = ref<any[]>([
+  // Define questions for different character types
+  // Common questions for all characters
+  const commonQuestions = [
     {
-      id: 'q1',
-      question: "What is your character's favorite activity?",
+      id: 'q_common_1',
+      question: "Co lubi robić twoja postać w wolnym czasie?",
       answers: [
-        { id: 'a1_1', text: 'Playing sports' },
-        { id: 'a1_2', text: 'Reading books' },
-        { id: 'a1_3', text: 'Drawing and painting' },
-        { id: 'a1_4', text: 'Playing music' },
+        { id: 'a_common_1_1', text: 'Spędzać czas na świeżym powietrzu' },
+        { id: 'a_common_1_2', text: 'Czytać książki' },
+        { id: 'a_common_1_3', text: 'Bawić się z przyjaciółmi' },
+        { id: 'a_common_1_4', text: 'Konstruować i budować' },
+      ],
+    },
+  ]
+
+  // Questions specific to male characters
+  const boyQuestions = [
+    {
+      id: 'q_boy_1',
+      question: "Jaki jest ulubiony sport twojego bohatera?",
+      answers: [
+        { id: 'a_boy_1_1', text: 'Piłka nożna' },
+        { id: 'a_boy_1_2', text: 'Koszykówka' },
+        { id: 'a_boy_1_3', text: 'Pływanie' },
+        { id: 'a_boy_1_4', text: 'Nie interesuje się sportem' },
       ],
     },
     {
-      id: 'q2',
-      question: "What is your character's favorite place?",
+      id: 'q_boy_2',
+      question: "Jaki talent posiada twój bohater?",
       answers: [
-        { id: 'a2_1', text: 'Mountains' },
-        { id: 'a2_2', text: 'Beach' },
-        { id: 'a2_3', text: 'Forest' },
-        { id: 'a2_4', text: 'City' },
+        { id: 'a_boy_2_1', text: 'Jest bardzo silny' },
+        { id: 'a_boy_2_2', text: 'Jest bardzo szybki' },
+        { id: 'a_boy_2_3', text: 'Jest bardzo sprytny' },
+        { id: 'a_boy_2_4', text: 'Potrafi rozśmieszać innych' },
+      ],
+    },
+  ]
+
+  // Questions specific to female characters
+  const girlQuestions = [
+    {
+      id: 'q_girl_1',
+      question: "Co najbardziej lubi robić twoja bohaterka?",
+      answers: [
+        { id: 'a_girl_1_1', text: 'Tańczyć' },
+        { id: 'a_girl_1_2', text: 'Śpiewać' },
+        { id: 'a_girl_1_3', text: 'Malować' },
+        { id: 'a_girl_1_4', text: 'Eksperymentować' },
       ],
     },
     {
-      id: 'q3',
-      question: "What is your character's greatest wish?",
+      id: 'q_girl_2',
+      question: "Jaki szczególny talent posiada twoja bohaterka?",
       answers: [
-        { id: 'a3_1', text: 'To have an adventure' },
-        { id: 'a3_2', text: 'To make new friends' },
-        { id: 'a3_3', text: 'To discover a mystery' },
-        { id: 'a3_4', text: 'To learn a new skill' },
+        { id: 'a_girl_2_1', text: 'Jest bardzo kreatywna' },
+        { id: 'a_girl_2_2', text: 'Jest bardzo mądra' },
+        { id: 'a_girl_2_3', text: 'Jest bardzo odważna' },
+        { id: 'a_girl_2_4', text: 'Potrafi zrozumieć innych' },
       ],
     },
-  ]) // Now we define the questions in the store
+  ]
+
+  // Both character types share these questions
+  const sharedQuestions = [
+    {
+      id: 'q_shared_1',
+      question: "Jakie jest największe marzenie twojej postaci?",
+      answers: [
+        { id: 'a_shared_1_1', text: 'Przeżyć wielką przygodę' },
+        { id: 'a_shared_1_2', text: 'Znaleźć najlepszego przyjaciela' },
+        { id: 'a_shared_1_3', text: 'Odkryć tajemnicę' },
+        { id: 'a_shared_1_4', text: 'Nauczyć się nowej umiejętności' },
+      ],
+    },
+    {
+      id: 'q_shared_2',
+      question: "Gdzie twoja postać najbardziej lubi spędzać czas?",
+      answers: [
+        { id: 'a_shared_2_1', text: 'W lesie' },
+        { id: 'a_shared_2_2', text: 'Na plaży' },
+        { id: 'a_shared_2_3', text: 'W górach' },
+        { id: 'a_shared_2_4', text: 'W domu' },
+      ],
+    }
+  ]
+  
+  // Story customization - this will hold the questions for the current character
+  const storyQuestions = ref<StoryQuestion[]>([])
+  
+  // Map to store character-specific questions (characterId -> questions array)
+  const characterQuestions = ref<Record<string, StoryQuestion[]>>({})
 
   const storyAnswers = ref<Record<string, Record<number, string>>>({}) // characterId -> {questionNumber: answerId}
 
@@ -87,19 +146,62 @@ export const useBookStore = defineStore('book', () => {
     return storyAnswers.value[characterId]?.[questionNumber] || ''
   }
 
+  // Get fixed question set based on character sex
+  function getQuestionsForSex(sex: 'male' | 'female'): StoryQuestion[] {
+    // Common questions for all characters
+    const questions = [...commonQuestions]
+    
+    // Add sex-specific questions
+    if (sex === 'male') {
+      questions.push(...boyQuestions)
+    } else {
+      questions.push(...girlQuestions)
+    }
+    
+    // Add shared questions for both
+    questions.push(...sharedQuestions)
+    
+    return questions
+  }
+  
+  // Associate pre-determined questions with a character
+  function assignQuestionsToCharacter(characterId: string, sex: 'male' | 'female'): void {
+    // Get the fixed question set for this sex
+    const questions = getQuestionsForSex(sex)
+    
+    // Assign these questions to the character
+    characterQuestions.value[characterId] = questions
+  }
+  
+  // Set the current character for story editing
+  function setCurrentStoryCharacter(characterId: string, sex: 'male' | 'female') {
+    currentStoryCharacterId.value = characterId
+    currentStoryStep.value = 1 // Reset to first question
+    
+    // Ensure questions are assigned for this character
+    if (!characterQuestions.value[characterId]) {
+      assignQuestionsToCharacter(characterId, sex)
+    }
+    
+    // Set the current questions to this character's question set
+    storyQuestions.value = characterQuestions.value[characterId]
+  }
+
   function isCharacterStoryComplete(characterId: string): boolean {
     const answers = storyAnswers.value[characterId] || {}
-    return Object.keys(answers).length === storyQuestions.value.length
+    const questions = characterQuestions.value[characterId] || []
+    
+    // Need to have answered all questions for this character
+    return questions.length > 0 && Object.keys(answers).length === questions.length
   }
 
   function areAllStoriesComplete(): boolean {
-    // This would depend on the useCharacterStore
-    // For now, just check if we have any story answers
+    // Check if all characters have completed their stories
+    const characterIds = Object.keys(characterQuestions.value)
+    
     return (
-      Object.keys(storyAnswers.value).length > 0 &&
-      Object.values(storyAnswers.value).every(
-        (answers) => Object.keys(answers).length === storyQuestions.value.length,
-      )
+      characterIds.length > 0 &&
+      characterIds.every(charId => isCharacterStoryComplete(charId))
     )
   }
 
@@ -147,11 +249,15 @@ export const useBookStore = defineStore('book', () => {
     isComplete,
     storyQuestions,
     storyAnswers,
+    characterQuestions,
     updatePage,
     getTemplateComponent,
     getCharacterSvg,
     saveStoryAnswer,
     getStoryAnswer,
+    getQuestionsForSex,
+    assignQuestionsToCharacter,
+    setCurrentStoryCharacter,
     isCharacterStoryComplete,
     areAllStoriesComplete,
     finalizeBook,

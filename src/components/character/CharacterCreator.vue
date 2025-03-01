@@ -99,6 +99,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useCharacterStore } from '@/stores/character'
+import { useBookStore } from '@/stores/book'
 import CharacterPreview from './CharacterPreview.vue'
 import FaceEditor from './steps/FaceEditor.vue'
 import BodyEditor from './steps/BodyEditor.vue'
@@ -150,6 +151,13 @@ const finishCharacter = () => {
     characterStore.updateCharacter(characterStore.currentCharacter.id, {
       isComplete: true,
     })
+    
+    // Assign the predetermined question set to this character
+    const bookStore = useBookStore()
+    bookStore.assignQuestionsToCharacter(
+      characterStore.currentCharacter.id, 
+      characterStore.currentCharacter.sex
+    )
 
     // Emit event to parent component
     emit('character-completed')

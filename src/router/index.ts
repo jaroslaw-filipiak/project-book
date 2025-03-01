@@ -26,8 +26,31 @@ const router = createRouter({
     },
     {
       path: '/kreator',
-      name: 'book-creator',
-      component: () => import('../views/CreatorView.vue'),
+      redirect: '/kreator/postacie',
+    },
+    {
+      path: '/kreator/postacie',
+      name: 'characters',
+      component: () => import('../views/creator/CharactersView.vue'),
+      meta: { title: 'Create Characters' }
+    },
+    {
+      path: '/kreator/historia',
+      name: 'story',
+      component: () => import('../views/creator/StoryView.vue'),
+      meta: { title: 'Create Story' }
+    },
+    {
+      path: '/kreator/strony',
+      name: 'pages',
+      component: () => import('../views/creator/PagesView.vue'),
+      meta: { title: 'Design Pages' }
+    },
+    {
+      path: '/kreator/podsumowanie',
+      name: 'summary',
+      component: () => import('../views/creator/SummaryView.vue'),
+      meta: { title: 'Book Summary' }
     },
   ],
 })
