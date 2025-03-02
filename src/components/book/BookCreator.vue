@@ -88,7 +88,7 @@
                   />
                 </div>
                 <div class="mb-4">
-                  <label class="block text-sm font-medium mb-1">Gender</label>
+                  <label class="block text-sm font-medium mb-1">Płeć</label>
                   <select v-model="newCharacterGender" required class="w-full p-2 border rounded">
                     <option value="">Wybierz płeć</option>
                     <option value="male">Chłopiec</option>

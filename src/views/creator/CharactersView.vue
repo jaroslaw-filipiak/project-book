@@ -1,16 +1,22 @@
 <template>
   <div class="characters-view container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6" v-if="!isAnyCharacterBeingCreated">Stwórz bohaterów do swojej książki</h1>
-    
+    <h1 class="text-3xl font-bold mb-6" v-if="!isAnyCharacterBeingCreated">
+      Stwórz bohaterów do swojej książki
+    </h1>
+
     <CreatorNavigation v-if="!isAnyCharacterBeingCreated" currentStep="postacie" />
 
     <!-- Character creation interface -->
     <div class="characters-container">
       <!-- all characters created -->
-      <div v-if="characterStore.areAllCharactersComplete && !isAnyCharacterBeingCreated" class="mb-6 p-6 bg-green-50 border border-green-200 rounded-lg">
+      <div
+        v-if="characterStore.areAllCharactersComplete && !isAnyCharacterBeingCreated"
+        class="mb-6 p-6 bg-green-50 border border-green-200 rounded-lg"
+      >
         <h2 class="text-2xl font-bold mb-4 text-green-700">Wszystkie postacie utworzone!</h2>
         <p class="text-gray-600 mb-4">
-          Stworzyłeś wszystkie {{ characterStore.MAX_CHARACTERS }} postacie. Możesz teraz przejść do tworzenia historii.
+          Stworzyłeś wszystkie {{ characterStore.MAX_CHARACTERS }} postacie. Możesz teraz przejść do
+          tworzenia historii.
         </p>
         <button
           @click="navigateNext"
@@ -19,16 +25,23 @@
           Przejdź do tworzenia historii
         </button>
       </div>
-      
+
       <!-- no characters created -->
       <div v-else-if="completedCharacters.length === 0 && !isAnyCharacterBeingCreated" class="mb-6">
         <p class="text-gray-600">Utwórz {{ characterStore.MAX_CHARACTERS }} postacie</p>
       </div>
 
       <!-- is one character created but not all -->
-      <div v-else-if="completedCharacters.length > 0 && !characterStore.areAllCharactersComplete && !isAnyCharacterBeingCreated" class="mb-6">
+      <div
+        v-else-if="
+          completedCharacters.length > 0 &&
+          !characterStore.areAllCharactersComplete &&
+          !isAnyCharacterBeingCreated
+        "
+        class="mb-6"
+      >
         <h2 class="text-2xl font-bold mb-4">
-          Brawo! utworzyłeś już {{ completedCharacters.length }} 
+          Brawo! utworzyłeś już {{ completedCharacters.length }}
           {{ completedCharacters.length === 1 ? 'postać' : 'postacie' }}
         </h2>
         <p class="text-gray-600">
@@ -38,7 +51,10 @@
       </div>
 
       <!-- Character slots grid with completed characters and next form -->
-      <div v-if="!isAnyCharacterBeingCreated" class="character-slots grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div
+        v-if="!isAnyCharacterBeingCreated"
+        class="character-slots grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
+      >
         <!-- Display completed characters first -->
         <div
           v-for="character in completedCharacters"
@@ -86,7 +102,7 @@
                   />
                 </div>
                 <div class="mb-4">
-                  <label class="block text-sm font-medium mb-1">Gender</label>
+                  <label class="block text-sm font-medium mb-1">Płeć</label>
                   <select v-model="newCharacterGender" required class="w-full p-2 border rounded">
                     <option value="">Wybierz płeć</option>
                     <option value="male">Chłopiec</option>
@@ -206,7 +222,7 @@ const areAllStoriesComplete = computed(() => {
 // Check if book is complete
 const isBookComplete = computed(() => {
   return (
-    bookStore.pages.length === bookStore.maxPages && 
+    bookStore.pages.length === bookStore.maxPages &&
     bookStore.pages.every((page) => page && page.templateId)
   )
 })
