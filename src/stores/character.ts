@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import type { Character, CharacterFeature } from '@/types/book'
 
 export const useCharacterStore = defineStore('characters', () => {
-  const MAX_CHARACTERS = 2
+  const MAX_CHARACTERS = 1
   const characters = ref<Character[]>([])
   const currentStep = ref(1) // 1: Basic Info, 2: Face, 3: Body, 4: Hair
   const currentCharacterId = ref<string | null>(null)
@@ -26,7 +26,7 @@ export const useCharacterStore = defineStore('characters', () => {
       id: crypto.randomUUID ? crypto.randomUUID() : `char_${Date.now()}`,
       name,
       sex,
-      isComplete: false
+      isComplete: false,
     }
     characters.value.push(newCharacter)
     currentCharacterId.value = newCharacter.id
@@ -55,8 +55,8 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // Update specific character feature
   const updateCharacterFeature = (
-    featureType: 'face' | 'eyes' | 'nose' | 'mouth' | 'hair' | 'body' | 'accessories', 
-    featureData: CharacterFeature | CharacterFeature[] | null
+    featureType: 'face' | 'eyes' | 'nose' | 'mouth' | 'hair' | 'body' | 'accessories',
+    featureData: CharacterFeature | CharacterFeature[] | null,
   ) => {
     if (currentCharacterId.value) {
       updateCharacter(currentCharacterId.value, {

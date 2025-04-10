@@ -1,50 +1,60 @@
 <template>
   <div class="face-editor">
     <h2 class="text-xl font-bold mb-4">Wybierz twarz dla postaci</h2>
-    
+
     <!-- Face Shape Selection -->
     <div class="feature-section mb-8">
-      <h3 class="text-lg font-medium mb-3">Kształt twarzy</h3>
+      <!-- <h3 class="text-lg font-medium mb-3">Kształt twarzy</h3> -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div 
-          v-for="face in faceShapes" 
+        <div
+          v-for="face in faceShapes"
           :key="face.id"
-          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
-                  {'border-blue-500 bg-blue-50': isSelected('face', face.id)}]"
+          :class="[
+            'feature-option border rounded-lg cursor-pointer hover:border-blue-500 transition overflow-hidden',
+            { 'border-blue-500 bg-blue-50': isSelected('face', face.id) },
+          ]"
           @click="selectFeature('face', face)"
         >
-          <div class="svg-container flex justify-center mb-2" v-html="face.svg"></div>
-          <div class="text-center text-sm">{{ face.name }}</div>
+          <div class="svg-container flex items-center justify-center p-10" v-html="face.svg"></div>
+          <!-- <div class="text-center text-sm">{{ face.name }}</div> -->
         </div>
       </div>
     </div>
-    
+
+    <!-- Not used in Open Peps MVP assets library -->
     <!-- Eyes Selection -->
-    <div class="feature-section mb-8">
+    <div class="hidden feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Oczy</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div 
-          v-for="eyes in eyesOptions" 
+        <div
+          v-for="eyes in eyesOptions"
           :key="eyes.id"
-          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
-                  {'border-blue-500 bg-blue-50': isSelected('eyes', eyes.id)}]"
+          :class="[
+            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
+            { 'border-blue-500 bg-blue-50': isSelected('eyes', eyes.id) },
+          ]"
           @click="selectFeature('eyes', eyes)"
         >
-          <div class="svg-container flex justify-center mb-2" v-html="eyes.svg"></div>
+          <div
+            class="svg-container flex justify-center mb-2 scale-75 origin-center"
+            v-html="eyes.svg"
+          ></div>
           <div class="text-center text-sm">{{ eyes.name }}</div>
         </div>
       </div>
     </div>
-    
+
     <!-- Nose Selection -->
-    <div class="feature-section mb-8">
+    <div class="hidden feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Nos</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div 
-          v-for="nose in noseOptions" 
+        <div
+          v-for="nose in noseOptions"
           :key="nose.id"
-          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
-                  {'border-blue-500 bg-blue-50': isSelected('nose', nose.id)}]"
+          :class="[
+            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
+            { 'border-blue-500 bg-blue-50': isSelected('nose', nose.id) },
+          ]"
           @click="selectFeature('nose', nose)"
         >
           <div class="svg-container flex justify-center mb-2" v-html="nose.svg"></div>
@@ -52,16 +62,18 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Mouth Selection -->
-    <div class="feature-section mb-8">
+    <div class="hidden feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Usta</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div 
-          v-for="mouth in mouthOptions" 
+        <div
+          v-for="mouth in mouthOptions"
           :key="mouth.id"
-          :class="['feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition', 
-                  {'border-blue-500 bg-blue-50': isSelected('mouth', mouth.id)}]"
+          :class="[
+            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
+            { 'border-blue-500 bg-blue-50': isSelected('mouth', mouth.id) },
+          ]"
           @click="selectFeature('mouth', mouth)"
         >
           <div class="svg-container flex justify-center mb-2" v-html="mouth.svg"></div>
@@ -84,13 +96,16 @@ const characterStore = useCharacterStore()
 const isSelected = (featureType: string, featureId: string): boolean => {
   const character = characterStore.currentCharacter
   if (!character) return false
-  
+
   const feature = character[featureType as keyof typeof character] as CharacterFeature | undefined
   return feature?.id === featureId
 }
 
 // Select a feature for the character
-const selectFeature = (featureType: 'face' | 'eyes' | 'nose' | 'mouth', feature: CharacterFeature) => {
+const selectFeature = (
+  featureType: 'face' | 'eyes' | 'nose' | 'mouth',
+  feature: CharacterFeature,
+) => {
   characterStore.updateCharacterFeature(featureType, feature)
 }
 

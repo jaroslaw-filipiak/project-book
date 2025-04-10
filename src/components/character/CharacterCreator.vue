@@ -8,7 +8,9 @@
           <div class="preview-card border rounded-lg overflow-hidden">
             <h4 class="p-3 bg-gray-100 border-b font-medium">Podgląd postaci</h4>
             <div class="p-4">
-              <CharacterPreview :character="characterStore.currentCharacter" />
+              <div>
+                <CharacterPreview :character="characterStore.currentCharacter" />
+              </div>
 
               <div v-if="characterStore.currentCharacter" class="character-info mt-4">
                 <h3 class="font-bold">{{ characterStore.currentCharacter.name }}</h3>
@@ -151,12 +153,12 @@ const finishCharacter = () => {
     characterStore.updateCharacter(characterStore.currentCharacter.id, {
       isComplete: true,
     })
-    
+
     // Assign the predetermined question set to this character
     const bookStore = useBookStore()
     bookStore.assignQuestionsToCharacter(
-      characterStore.currentCharacter.id, 
-      characterStore.currentCharacter.sex
+      characterStore.currentCharacter.id,
+      characterStore.currentCharacter.sex,
     )
 
     // Emit event to parent component
