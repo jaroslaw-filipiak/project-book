@@ -2,11 +2,11 @@
   <div class="character-preview" :style="{ transform: `scale(${scale})` }">
     <!-- Character preview with layered SVG elements -->
     <div v-if="character" class="character-container">
-      <!-- Face shape layer -->
+      <!-- Head shape layer (previously face) -->
       <div
-        v-if="character.face"
-        class="face-layer scale-50 origin-center"
-        v-html="character.face?.svg"
+        v-if="character.head"
+        class="head-layer scale-50 origin-center"
+        v-html="character.head?.svg"
       ></div>
 
       <!-- Eyes layer -->
@@ -33,21 +33,30 @@
         v-html="character.mouth?.svg"
       ></div>
 
-      <!-- Hair layer -->
+      <!-- Facial Hair layer -->
+      <div
+        v-if="character.facialHair"
+        class="facial-hair-layer absolute"
+        style="top: 75%; left: 50%; transform: translate(-50%, -50%)"
+        v-html="character.facialHair?.svg"
+      ></div>
+
+      <!-- Hair layer (kept for backward compatibility) -->
       <div
         v-if="character.hair"
         class="hair-layer absolute inset-0"
         v-html="character.hair?.svg"
       ></div>
 
-      <!-- Accessories layer -->
-      <div
-        v-if="character.accessories && character.accessories.length > 0"
-        class="accessories-layer absolute inset-0"
-        v-for="accessory in character.accessories"
-        :key="accessory.id"
-        v-html="accessory.svg"
-      ></div>
+      <!-- Accessories layers (now multiple) -->
+      <template v-if="character.accessories && character.accessories.length > 0">
+        <div
+          v-for="accessory in character.accessories"
+          :key="accessory.id"
+          class="accessory-layer absolute inset-0"
+          v-html="accessory.svg"
+        ></div>
+      </template>
     </div>
 
     <!-- Placeholder when no character data -->

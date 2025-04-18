@@ -34,11 +34,13 @@ export interface Character {
   name: string
   sex: 'male' | 'female'
   isComplete: boolean
+  head?: CharacterFeature
   face?: CharacterFeature
+  facialHair?: CharacterFeature
+  accessories?: CharacterFeature[]
+  body?: CharacterFeature
   eyes?: CharacterFeature
   nose?: CharacterFeature
   mouth?: CharacterFeature
   hair?: CharacterFeature
-  body?: CharacterFeature
-  accessories?: CharacterFeature[]
 }

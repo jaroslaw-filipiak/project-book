@@ -32,7 +32,7 @@
             </button>
 
             <button
-              v-if="characterStore.currentStep < 4"
+              v-if="characterStore.currentStep < 5"
               @click="characterStore.nextStep"
               class="w-full p-2 border rounded bg-blue-500 text-white"
             >
@@ -46,14 +46,6 @@
             >
               {{ characterStore.isEditing ? 'Zapisz zmiany' : 'Zapisz postać' }}
             </button>
-
-            <!-- <button
-              v-if="!characterStore.isEditing"
-              @click="cancelCreation"
-              class="w-full p-2 border rounded"
-            >
-              Anuluj
-            </button> -->
           </div>
         </div>
       </div>
@@ -64,7 +56,7 @@
         <div class="steps-indicator mb-6">
           <div class="flex justify-between">
             <div
-              v-for="step in 4"
+              v-for="step in 5"
               :key="step"
               :class="[
                 'step-indicator',
@@ -78,20 +70,23 @@
           <div class="progress-bar">
             <div
               class="progress"
-              :style="{ width: `${((characterStore.currentStep - 1) / 3) * 100}%` }"
+              :style="{ width: `${((characterStore.currentStep - 1) / 4) * 100}%` }"
             ></div>
           </div>
         </div>
 
         <div class="border rounded-lg p-6">
+          <!-- Head Editor Step -->
+          <HeadEditor v-if="characterStore.currentStep === 2" />
+
           <!-- Face Editor Step -->
-          <FaceEditor v-if="characterStore.currentStep === 2" />
-
-          <!-- Body Editor Step -->
-          <BodyEditor v-if="characterStore.currentStep === 3" />
-
-          <!-- Hair Editor Step -->
-          <HairEditor v-if="characterStore.currentStep === 4" />
+          <FaceEditor v-if="characterStore.currentStep === 3" />
+          
+          <!-- Facial Hair Editor Step -->
+          <FacialHairEditor v-if="characterStore.currentStep === 4" />
+          
+          <!-- Accessories Editor Step -->
+          <AccessoriesEditor v-if="characterStore.currentStep === 5" />
         </div>
       </div>
     </div>
@@ -103,9 +98,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useCharacterStore } from '@/stores/character'
 import { useBookStore } from '@/stores/book'
 import CharacterPreview from './CharacterPreview.vue'
+import HeadEditor from './steps/HeadEditor.vue'
 import FaceEditor from './steps/FaceEditor.vue'
-import BodyEditor from './steps/BodyEditor.vue'
-import HairEditor from './steps/HairEditor.vue'
+import FacialHairEditor from './steps/FacialHairEditor.vue'
+import AccessoriesEditor from './steps/AccessoriesEditor.vue'
 
 const emit = defineEmits<{
   (e: 'character-completed'): void
@@ -144,11 +140,6 @@ const handleBasicInfo = () => {
 // Finish character and ensure it's marked as complete
 const finishCharacter = () => {
   if (characterStore.currentCharacter) {
-    // Update all character features if they're not yet set
-    if (!characterStore.currentCharacter.face) {
-      characterStore.updateCharacterFeature('face', { ...selectedFace.value })
-    }
-
     // Mark character as complete
     characterStore.updateCharacter(characterStore.currentCharacter.id, {
       isComplete: true,
@@ -177,13 +168,15 @@ const cancelCreation = () => {
 const getStepName = (step: number): string => {
   switch (step) {
     case 1:
-      return 'Basic Info'
+      return 'Informacje podstawowe'
     case 2:
-      return 'Face'
+      return 'Głowa'
     case 3:
-      return 'Body'
+      return 'Twarz'
     case 4:
-      return 'Hair'
+      return 'Zarost'
+    case 5:
+      return 'Akcesoria'
     default:
       return ''
   }

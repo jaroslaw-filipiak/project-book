@@ -5,7 +5,7 @@ import type { Character, CharacterFeature } from '@/types/book'
 export const useCharacterStore = defineStore('characters', () => {
   const MAX_CHARACTERS = 1
   const characters = ref<Character[]>([])
-  const currentStep = ref(1) // 1: Basic Info, 2: Face, 3: Body, 4: Hair
+  const currentStep = ref(1) // 1: Basic Info, 2: Head, 3: Face, 4: Facial Hair, 5: Accessories
   const currentCharacterId = ref<string | null>(null)
   const isEditing = ref(false)
 
@@ -30,7 +30,7 @@ export const useCharacterStore = defineStore('characters', () => {
     }
     characters.value.push(newCharacter)
     currentCharacterId.value = newCharacter.id
-    currentStep.value = 2 // Move to Face Editor after creating character
+    currentStep.value = 2 // Move to Head Editor after creating character
     isEditing.value = false
   }
 
@@ -55,7 +55,7 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // Update specific character feature
   const updateCharacterFeature = (
-    featureType: 'face' | 'eyes' | 'nose' | 'mouth' | 'hair' | 'body' | 'accessories',
+    featureType: 'head' | 'face' | 'facialHair' | 'body' | 'accessories' | 'eyes' | 'nose' | 'mouth' | 'hair',
     featureData: CharacterFeature | CharacterFeature[] | null,
   ) => {
     if (currentCharacterId.value) {
@@ -65,10 +65,11 @@ export const useCharacterStore = defineStore('characters', () => {
     }
   }
 
-  // Check if current character has completed all steps
+  // Check if current character has completed all required steps
   const isCurrentCharacterComplete = computed(() => {
     const char = currentCharacter.value
-    return char && char.face && char.eyes && char.nose && char.mouth && char.hair && char.body
+    // Minimum requirements: head and face
+    return char && char.head && char.face && char.body
   })
 
   // Set character as complete
@@ -83,7 +84,7 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // Move to next step
   const nextStep = () => {
-    if (currentStep.value < 4) {
+    if (currentStep.value < 5) {
       currentStep.value++
     }
   }

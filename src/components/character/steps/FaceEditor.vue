@@ -1,29 +1,9 @@
 <template>
   <div class="face-editor">
-    <h2 class="text-xl font-bold mb-4">Wybierz twarz dla postaci</h2>
+    <h2 class="text-xl font-bold mb-4">Wybierz elementy twarzy</h2>
 
-    <!-- Face Shape Selection -->
-    <div class="feature-section mb-8">
-      <!-- <h3 class="text-lg font-medium mb-3">Kształt twarzy</h3> -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div
-          v-for="face in faceShapes"
-          :key="face.id"
-          :class="[
-            'feature-option border rounded-lg cursor-pointer hover:border-blue-500 transition overflow-hidden',
-            { 'border-blue-500 bg-blue-50': isSelected('face', face.id) },
-          ]"
-          @click="selectFeature('face', face)"
-        >
-          <div class="svg-container flex items-center justify-center p-10" v-html="face.svg"></div>
-          <!-- <div class="text-center text-sm">{{ face.name }}</div> -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Not used in Open Peps MVP assets library -->
     <!-- Eyes Selection -->
-    <div class="hidden feature-section mb-8">
+    <div class="feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Oczy</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
@@ -45,7 +25,7 @@
     </div>
 
     <!-- Nose Selection -->
-    <div class="hidden feature-section mb-8">
+    <div class="feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Nos</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
@@ -64,7 +44,7 @@
     </div>
 
     <!-- Mouth Selection -->
-    <div class="hidden feature-section mb-8">
+    <div class="feature-section mb-8">
       <h3 class="text-lg font-medium mb-3">Usta</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
@@ -87,7 +67,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
-import { faceShapes, eyesOptions, noseOptions, mouthOptions } from '@/constants/characterAssets'
+import { eyesOptions, noseOptions, mouthOptions } from '@/constants/characterAssets'
 import type { CharacterFeature } from '@/types/book'
 
 const characterStore = useCharacterStore()
@@ -107,12 +87,21 @@ const selectFeature = (
   feature: CharacterFeature,
 ) => {
   characterStore.updateCharacterFeature(featureType, feature)
+  
+  // Also update the 'face' key for compatibility
+  if (featureType === 'eyes' || featureType === 'nose' || featureType === 'mouth') {
+    // Use first selected feature as the face feature for compatibility
+    const char = characterStore.currentCharacter
+    if (!char?.face && feature) {
+      characterStore.updateCharacterFeature('face', feature)
+    }
+  }
 }
 
 // Check if all face features are selected
 const isComplete = computed(() => {
   const character = characterStore.currentCharacter
-  return character?.face && character?.eyes && character?.nose && character?.mouth
+  return character?.eyes && character?.nose && character?.mouth
 })
 </script>
 
