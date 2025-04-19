@@ -32,7 +32,7 @@
             </button>
 
             <button
-              v-if="characterStore.currentStep < 5"
+              v-if="characterStore.currentStep < 6"
               @click="characterStore.nextStep"
               class="w-full p-2 border rounded bg-blue-500 text-white"
             >
@@ -56,13 +56,13 @@
         <div class="steps-indicator mb-6">
           <div class="flex justify-between">
             <div
-              v-for="step in 5"
+              v-for="step in 6"
               :key="step"
               :class="[
                 'step-indicator',
                 { active: characterStore.currentStep === step },
                 { completed: characterStore.currentStep > step },
-                { clickable: canNavigateToStep(step) }
+                { clickable: canNavigateToStep(step) },
               ]"
               @click="navigateToStep(step)"
             >
@@ -72,12 +72,44 @@
           <div class="progress-bar">
             <div
               class="progress"
-              :style="{ width: `${((characterStore.currentStep - 1) / 4) * 100}%` }"
+              :style="{ width: `${((characterStore.currentStep - 1) / 5) * 100}%` }"
             ></div>
           </div>
         </div>
 
         <div class="border rounded-lg p-6">
+          <!-- Basic Info Step -->
+          <div v-if="characterStore.currentStep === 1">
+            <h2 class="text-xl font-bold mb-4">Podstawowe informacje</h2>
+            <form @submit.prevent="handleBasicInfo">
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Imię</label>
+                <input
+                  v-model="name"
+                  type="text"
+                  required
+                  class="w-full p-2 border rounded"
+                  placeholder="Wpisz imię"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Płeć</label>
+                <select v-model="sex" required class="w-full p-2 border rounded">
+                  <option value="">Wybierz płeć</option>
+                  <option value="male">Chłopiec</option>
+                  <option value="female">Dziewczynka</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                :disabled="!isBasicInfoValid"
+              >
+                Dalej
+              </button>
+            </form>
+          </div>
+
           <!-- Head Editor Step -->
           <HeadEditor v-if="characterStore.currentStep === 2" />
 
@@ -87,8 +119,11 @@
           <!-- Facial Hair Editor Step -->
           <FacialHairEditor v-if="characterStore.currentStep === 4" />
 
+          <!-- Body Editor Step -->
+          <BodyEditor v-if="characterStore.currentStep === 5" />
+
           <!-- Accessories Editor Step -->
-          <AccessoriesEditor v-if="characterStore.currentStep === 5" />
+          <AccessoriesEditor v-if="characterStore.currentStep === 6" />
         </div>
       </div>
     </div>
@@ -103,6 +138,7 @@ import CharacterPreview from './CharacterPreview.vue'
 import HeadEditor from './steps/HeadEditor.vue'
 import FaceEditor from './steps/FaceEditor.vue'
 import FacialHairEditor from './steps/FacialHairEditor.vue'
+import BodyEditor from './steps/BodyEditor.vue'
 import AccessoriesEditor from './steps/AccessoriesEditor.vue'
 
 const emit = defineEmits<{
@@ -178,6 +214,8 @@ const getStepName = (step: number): string => {
     case 4:
       return 'Zarost'
     case 5:
+      return 'Ciało'
+    case 6:
       return 'Akcesoria'
     default:
       return ''
@@ -188,13 +226,13 @@ const getStepName = (step: number): string => {
 const canNavigateToStep = (step: number): boolean => {
   // Do kroku 1 zawsze można wrócić
   if (step === 1) return true
-  
+
   // Można nawigować do każdego już ukończonego kroku
   if (step <= characterStore.currentStep) return true
-  
+
   // Można przejść do kolejnego kroku
   if (step === characterStore.currentStep + 1) return true
-  
+
   return false
 }
 

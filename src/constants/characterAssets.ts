@@ -64,7 +64,7 @@ import cuteSvg from '@/assets/svg/face/Cute.svg?raw'
 import cyclopsSvg from '@/assets/svg/face/Cyclops.svg?raw'
 import drivenSvg from '@/assets/svg/face/Driven.svg?raw'
 import eatingHappySvg from '@/assets/svg/face/Eating Happy.svg?raw'
-import explainingSvg from '@/assets/svg/face/Explaining.svg?raw'
+import faceExplainingSvg from '@/assets/svg/face/Explaining.svg?raw'
 import eyesClosedSvg from '@/assets/svg/face/Eyes Closed.svg?raw'
 import fearSvg from '@/assets/svg/face/Fear.svg?raw'
 import hecticSvg from '@/assets/svg/face/Hectic.svg?raw'
@@ -113,6 +113,38 @@ import glasses5Svg from '@/assets/svg/accessories/Glasses 5.svg?raw'
 import glassesSvg from '@/assets/svg/accessories/Glasses.svg?raw'
 import sunglasses2Svg from '@/assets/svg/accessories/Sunglasses 2.svg?raw'
 import sunglassesSvg from '@/assets/svg/accessories/Sunglasses.svg?raw'
+
+// Body / Torso
+import blazerBlackTeeSvg from '@/assets/svg/body/Blazer Black Tee.svg?raw'
+import buttonShirt1Svg from '@/assets/svg/body/Button Shirt 1.svg?raw'
+import buttonShirt2Svg from '@/assets/svg/body/Button Shirt 2.svg?raw'
+import coffeeSvg from '@/assets/svg/body/Coffee.svg?raw'
+import deviceSvg from '@/assets/svg/body/Device.svg?raw'
+import dressSvg from '@/assets/svg/body/Dress.svg?raw'
+import bodyExplainingSvg from '@/assets/svg/body/Explaining.svg?raw'
+import furJacketSvg from '@/assets/svg/body/Fur Jacket.svg?raw'
+import gamingSvg from '@/assets/svg/body/Gaming.svg?raw'
+import gymShirtSvg from '@/assets/svg/body/Gym Shirt.svg?raw'
+import hoodieSvg from '@/assets/svg/body/Hoodie.svg?raw'
+import killerSvg from '@/assets/svg/body/Killer.svg?raw'
+import macbookSvg from '@/assets/svg/body/Macbook.svg?raw'
+import paperSvg from '@/assets/svg/body/Paper.svg?raw'
+import pointingUpSvg from '@/assets/svg/body/Pointing Up.svg?raw'
+import polkaDotJacketSvg from '@/assets/svg/body/Polka Dot Jacket.svg?raw'
+import poloAndSweaterSvg from '@/assets/svg/body/Polo and Sweater.svg?raw'
+import shirtAndCoatSvg from '@/assets/svg/body/Shirt and Coat.svg?raw'
+import sportyTeeSvg from '@/assets/svg/body/Sporty Tee.svg?raw'
+import stripedPocketTeeSvg from '@/assets/svg/body/Striped Pocket Tee.svg?raw'
+import stripedTeeSvg from '@/assets/svg/body/Striped Tee.svg?raw'
+import sweaterDotsSvg from '@/assets/svg/body/Sweater Dots.svg?raw'
+import sweaterSvg from '@/assets/svg/body/Sweater.svg?raw'
+import tee1Svg from '@/assets/svg/body/Tee 1.svg?raw'
+import tee2Svg from '@/assets/svg/body/Tee 2.svg?raw'
+import teeArmsCrossedSvg from '@/assets/svg/body/Tee Arms Crossed.svg?raw'
+import teeSelenaSvg from '@/assets/svg/body/Tee Selena.svg?raw'
+import thunderTShirtSvg from '@/assets/svg/body/Thunder T-Shirt.svg?raw'
+import turtleneckSvg from '@/assets/svg/body/Turtleneck.svg?raw'
+import whateverSvg from '@/assets/svg/body/Whatever.svg?raw'
 
 export const faceShapes = [
   {
@@ -422,7 +454,7 @@ export const faceExpressionOptions = [
   {
     id: 'face_explaining',
     name: 'Wyjaśniający',
-    svg: explainingSvg,
+    svg: faceExplainingSvg,
   },
   {
     id: 'face_eyes_closed',
@@ -669,14 +701,6 @@ export const accessoryOptions = [
     name: 'Okulary przeciwsłoneczne 2',
     svg: sunglasses2Svg,
   },
-  {
-    id: 'accessory_hat',
-    name: 'Kapelusz',
-    svg: `<svg width="100" height="50" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="25" rx="40" ry="10" fill="#444" />
-      <rect x="30" y="5" width="40" height="20" rx="5" fill="#444" />
-    </svg>`,
-  },
 ]
 
 // Eyes
@@ -811,30 +835,154 @@ export const hairOptions = [
 // Body types
 export const bodyOptions = [
   {
-    id: 'body_normal',
-    name: 'Zwykłe',
-    svg: `<svg width="150" height="200" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-      <rect x="50" y="100" width="50" height="80" rx="5" fill="#FF0000" />
-      <rect x="40" y="180" width="30" height="20" fill="#0000FF" />
-      <rect x="80" y="180" width="30" height="20" fill="#0000FF" />
-    </svg>`,
+    id: 'body_blazer_black_tee',
+    name: 'Marynarka z czarną koszulką',
+    svg: blazerBlackTeeSvg,
   },
   {
-    id: 'body_small',
-    name: 'Drobne',
-    svg: `<svg width="150" height="200" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-      <rect x="55" y="100" width="40" height="70" rx="5" fill="#FF0000" />
-      <rect x="45" y="170" width="25" height="30" fill="#0000FF" />
-      <rect x="80" y="170" width="25" height="30" fill="#0000FF" />
-    </svg>`,
+    id: 'body_button_shirt_1',
+    name: 'Koszula 1',
+    svg: buttonShirt1Svg,
   },
   {
-    id: 'body_large',
-    name: 'Duże',
-    svg: `<svg width="150" height="200" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-      <rect x="45" y="100" width="60" height="80" rx="10" fill="#FF0000" />
-      <rect x="35" y="180" width="35" height="20" fill="#0000FF" />
-      <rect x="80" y="180" width="35" height="20" fill="#0000FF" />
-    </svg>`,
+    id: 'body_button_shirt_2',
+    name: 'Koszula 2',
+    svg: buttonShirt2Svg,
+  },
+  {
+    id: 'body_coffee',
+    name: 'Z kawą',
+    svg: coffeeSvg,
+  },
+  {
+    id: 'body_device',
+    name: 'Z urządzeniem',
+    svg: deviceSvg,
+  },
+  {
+    id: 'body_dress',
+    name: 'Sukienka',
+    forSex: 'female',
+    svg: dressSvg,
+  },
+  {
+    id: 'body_explaining',
+    name: 'Wyjaśniający',
+    svg: bodyExplainingSvg,
+  },
+  {
+    id: 'body_fur_jacket',
+    name: 'Futrzana kurtka',
+    svg: furJacketSvg,
+  },
+  {
+    id: 'body_gaming',
+    name: 'Grający',
+    svg: gamingSvg,
+  },
+  {
+    id: 'body_gym_shirt',
+    name: 'Koszulka sportowa',
+    svg: gymShirtSvg,
+  },
+  {
+    id: 'body_hoodie',
+    name: 'Bluza z kapturem',
+    svg: hoodieSvg,
+  },
+  {
+    id: 'body_killer',
+    name: 'Zabójca',
+    svg: killerSvg,
+  },
+  {
+    id: 'body_macbook',
+    name: 'Z MacBookiem',
+    svg: macbookSvg,
+  },
+  {
+    id: 'body_paper',
+    name: 'Z papierem',
+    svg: paperSvg,
+  },
+  {
+    id: 'body_pointing_up',
+    name: 'Wskazujący w górę',
+    svg: pointingUpSvg,
+  },
+  {
+    id: 'body_polka_dot_jacket',
+    name: 'Kurtka w kropki',
+    svg: polkaDotJacketSvg,
+  },
+  {
+    id: 'body_polo_and_sweater',
+    name: 'Polo ze swetrem',
+    svg: poloAndSweaterSvg,
+  },
+  {
+    id: 'body_shirt_and_coat',
+    name: 'Koszula z płaszczem',
+    svg: shirtAndCoatSvg,
+  },
+  {
+    id: 'body_sporty_tee',
+    name: 'Sportowa koszulka',
+    svg: sportyTeeSvg,
+  },
+  {
+    id: 'body_striped_pocket_tee',
+    name: 'Koszulka w paski z kieszonką',
+    svg: stripedPocketTeeSvg,
+  },
+  {
+    id: 'body_striped_tee',
+    name: 'Koszulka w paski',
+    svg: stripedTeeSvg,
+  },
+  {
+    id: 'body_sweater_dots',
+    name: 'Sweter w kropki',
+    svg: sweaterDotsSvg,
+  },
+  {
+    id: 'body_sweater',
+    name: 'Sweter',
+    svg: sweaterSvg,
+  },
+  {
+    id: 'body_tee_1',
+    name: 'T-shirt 1',
+    svg: tee1Svg,
+  },
+  {
+    id: 'body_tee_2',
+    name: 'T-shirt 2',
+    svg: tee2Svg,
+  },
+  {
+    id: 'body_tee_arms_crossed',
+    name: 'T-shirt ze skrzyżowanymi rękami',
+    svg: teeArmsCrossedSvg,
+  },
+  {
+    id: 'body_tee_selena',
+    name: 'T-shirt Selena',
+    svg: teeSelenaSvg,
+  },
+  {
+    id: 'body_thunder_t_shirt',
+    name: 'T-shirt z błyskawicą',
+    svg: thunderTShirtSvg,
+  },
+  {
+    id: 'body_turtleneck',
+    name: 'Golf',
+    svg: turtleneckSvg,
+  },
+  {
+    id: 'body_whatever',
+    name: 'Obojętny',
+    svg: whateverSvg,
   },
 ]

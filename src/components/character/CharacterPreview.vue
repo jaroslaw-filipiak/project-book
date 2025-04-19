@@ -102,4 +102,8 @@ const scale = props.scale || 1
 .accessory-layer {
   @apply absolute scale-50 origin-center left-[47%] top-[51%] transform -translate-x-1/2 -translate-y-1/2 z-5;
 }
+
+.body-layer {
+  @apply absolute scale-50 origin-center left-[49%] top-[105%] transform -translate-x-1/2 -translate-y-1/2 z-0;
+}
 </style>

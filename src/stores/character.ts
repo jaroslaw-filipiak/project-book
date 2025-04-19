@@ -5,7 +5,7 @@ import type { Character, CharacterFeature } from '@/types/book'
 export const useCharacterStore = defineStore('characters', () => {
   const MAX_CHARACTERS = 1
   const characters = ref<Character[]>([])
-  const currentStep = ref(1) // 1: Basic Info, 2: Head, 3: Face, 4: Facial Hair, 5: Accessories
+  const currentStep = ref(1) // 1: Basic Info, 2: Head, 3: Face, 4: Facial Hair, 5: Body, 6: Accessories
   const currentCharacterId = ref<string | null>(null)
   const isEditing = ref(false)
 
@@ -93,7 +93,7 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // Move to next step
   const nextStep = () => {
-    if (currentStep.value < 5) {
+    if (currentStep.value < 6) {
       currentStep.value++
     }
   }
