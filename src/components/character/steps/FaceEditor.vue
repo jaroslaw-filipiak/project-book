@@ -1,63 +1,20 @@
 <template>
   <div class="face-editor">
-    <h2 class="text-xl font-bold mb-4">Wybierz elementy twarzy</h2>
+    <h2 class="text-xl font-bold mb-4">Wybierz wyraz twarzy postaci</h2>
 
-    <!-- Eyes Selection -->
+    <!-- Face Expressions Selection -->
     <div class="feature-section mb-8">
-      <h3 class="text-lg font-medium mb-3">Oczy</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div
-          v-for="eyes in eyesOptions"
-          :key="eyes.id"
+          v-for="face in faceExpressionOptions"
+          :key="face.id"
           :class="[
-            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
-            { 'border-blue-500 bg-blue-50': isSelected('eyes', eyes.id) },
+            'feature-option border rounded-lg cursor-pointer hover:border-blue-500 transition overflow-hidden',
+            { 'border-blue-500 bg-blue-50': isSelected('face', face.id) },
           ]"
-          @click="selectFeature('eyes', eyes)"
+          @click="selectFeature('face', face)"
         >
-          <div
-            class="svg-container flex justify-center mb-2 scale-75 origin-center"
-            v-html="eyes.svg"
-          ></div>
-          <div class="text-center text-sm">{{ eyes.name }}</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Nose Selection -->
-    <div class="feature-section mb-8">
-      <h3 class="text-lg font-medium mb-3">Nos</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div
-          v-for="nose in noseOptions"
-          :key="nose.id"
-          :class="[
-            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
-            { 'border-blue-500 bg-blue-50': isSelected('nose', nose.id) },
-          ]"
-          @click="selectFeature('nose', nose)"
-        >
-          <div class="svg-container flex justify-center mb-2" v-html="nose.svg"></div>
-          <div class="text-center text-sm">{{ nose.name }}</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mouth Selection -->
-    <div class="feature-section mb-8">
-      <h3 class="text-lg font-medium mb-3">Usta</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div
-          v-for="mouth in mouthOptions"
-          :key="mouth.id"
-          :class="[
-            'feature-option p-3 border rounded-lg cursor-pointer hover:border-blue-500 transition',
-            { 'border-blue-500 bg-blue-50': isSelected('mouth', mouth.id) },
-          ]"
-          @click="selectFeature('mouth', mouth)"
-        >
-          <div class="svg-container flex justify-center mb-2" v-html="mouth.svg"></div>
-          <div class="text-center text-sm">{{ mouth.name }}</div>
+          <div class="svg-container flex items-center justify-center p-4" v-html="face.svg"></div>
         </div>
       </div>
     </div>
@@ -67,7 +24,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
-import { eyesOptions, noseOptions, mouthOptions } from '@/constants/characterAssets'
+import { faceExpressionOptions } from '@/constants/characterAssets'
 import type { CharacterFeature } from '@/types/book'
 
 const characterStore = useCharacterStore()
@@ -82,26 +39,14 @@ const isSelected = (featureType: string, featureId: string): boolean => {
 }
 
 // Select a feature for the character
-const selectFeature = (
-  featureType: 'face' | 'eyes' | 'nose' | 'mouth',
-  feature: CharacterFeature,
-) => {
+const selectFeature = (featureType: 'face', feature: CharacterFeature) => {
   characterStore.updateCharacterFeature(featureType, feature)
-  
-  // Also update the 'face' key for compatibility
-  if (featureType === 'eyes' || featureType === 'nose' || featureType === 'mouth') {
-    // Use first selected feature as the face feature for compatibility
-    const char = characterStore.currentCharacter
-    if (!char?.face && feature) {
-      characterStore.updateCharacterFeature('face', feature)
-    }
-  }
 }
 
-// Check if all face features are selected
+// Check if face is selected
 const isComplete = computed(() => {
   const character = characterStore.currentCharacter
-  return character?.eyes && character?.nose && character?.mouth
+  return !!character?.face
 })
 </script>
 

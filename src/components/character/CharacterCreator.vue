@@ -62,7 +62,9 @@
                 'step-indicator',
                 { active: characterStore.currentStep === step },
                 { completed: characterStore.currentStep > step },
+                { clickable: canNavigateToStep(step) }
               ]"
+              @click="navigateToStep(step)"
             >
               {{ getStepName(step) }}
             </div>
@@ -81,10 +83,10 @@
 
           <!-- Face Editor Step -->
           <FaceEditor v-if="characterStore.currentStep === 3" />
-          
+
           <!-- Facial Hair Editor Step -->
           <FacialHairEditor v-if="characterStore.currentStep === 4" />
-          
+
           <!-- Accessories Editor Step -->
           <AccessoriesEditor v-if="characterStore.currentStep === 5" />
         </div>
@@ -181,6 +183,27 @@ const getStepName = (step: number): string => {
       return ''
   }
 }
+
+// Sprawdza czy można nawigować do danego kroku
+const canNavigateToStep = (step: number): boolean => {
+  // Do kroku 1 zawsze można wrócić
+  if (step === 1) return true
+  
+  // Można nawigować do każdego już ukończonego kroku
+  if (step <= characterStore.currentStep) return true
+  
+  // Można przejść do kolejnego kroku
+  if (step === characterStore.currentStep + 1) return true
+  
+  return false
+}
+
+// Nawiguje do wybranego kroku, jeśli jest to możliwe
+const navigateToStep = (step: number) => {
+  if (canNavigateToStep(step)) {
+    characterStore.currentStep = step
+  }
+}
 </script>
 
 <style scoped>
@@ -201,6 +224,15 @@ const getStepName = (step: number): string => {
 
 .step-indicator.completed {
   color: #48bb78;
+}
+
+.step-indicator.clickable {
+  cursor: pointer;
+}
+
+.step-indicator.clickable:hover {
+  color: #2b6cb0;
+  text-decoration: underline;
 }
 
 .progress-bar {

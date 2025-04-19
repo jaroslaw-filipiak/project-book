@@ -9,76 +9,42 @@
           :key="accessory.id"
           :class="[
             'feature-option border rounded-lg cursor-pointer hover:border-blue-500 transition',
-            { 'border-blue-500 bg-blue-50': isAccessorySelected(accessory.id) },
+            { 'border-blue-500 bg-blue-50': isSelected('accessories', accessory.id) },
           ]"
-          @click="toggleAccessory(accessory)"
+          @click="selectFeature('accessories', accessory)"
         >
           <div class="svg-container flex justify-center mb-2" v-html="accessory.svg"></div>
-          <div class="text-center text-sm">{{ accessory.name }}</div>
         </div>
-      </div>
-    </div>
-
-    <!-- Selected accessories -->
-    <div v-if="selectedAccessories.length > 0" class="selected-items p-4 bg-gray-50 rounded-lg mb-6">
-      <h3 class="font-medium mb-2">Wybrane akcesoria:</h3>
-      <div class="flex flex-wrap gap-2">
-        <span
-          v-for="accessory in selectedAccessories"
-          :key="accessory.id"
-          class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-        >
-          {{ accessory.name }}
-          <button @click="removeAccessory(accessory)" class="ml-2 text-blue-600">&times;</button>
-        </span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
 import { accessoryOptions } from '@/constants/characterAssets'
 import type { CharacterFeature } from '@/types/book'
 
 const characterStore = useCharacterStore()
 
-// Get currently selected accessories
-const selectedAccessories = computed(() => {
-  return characterStore.currentCharacter?.accessories || []
-})
+// Check if a feature is selected
+const isSelected = (featureType: string, featureId: string): boolean => {
+  const character = characterStore.currentCharacter
+  if (!character) return false
 
-// Check if an accessory is selected
-const isAccessorySelected = (accessoryId: string): boolean => {
-  return !!selectedAccessories.value.find(acc => acc.id === accessoryId)
+  // Sprawdzamy, czy istnieje pojedyncze akcesorium o tym ID
+  if (featureType === 'accessories' && character.accessories && character.accessories.length > 0) {
+    return character.accessories[0].id === featureId
+  }
+
+  return false
 }
 
-// Add or remove an accessory
-const toggleAccessory = (accessory: CharacterFeature) => {
-  const currentAccessories = [...(characterStore.currentCharacter?.accessories || [])]
-  const index = currentAccessories.findIndex(acc => acc.id === accessory.id)
-  
-  if (index === -1) {
-    // Add accessory if not already selected
-    currentAccessories.push(accessory)
-  } else {
-    // Remove if already selected
-    currentAccessories.splice(index, 1)
-  }
-  
-  characterStore.updateCharacterFeature('accessories', currentAccessories)
-}
-
-// Remove an accessory
-const removeAccessory = (accessory: CharacterFeature) => {
-  const currentAccessories = [...(characterStore.currentCharacter?.accessories || [])]
-  const index = currentAccessories.findIndex(acc => acc.id === accessory.id)
-  
-  if (index !== -1) {
-    currentAccessories.splice(index, 1)
-    characterStore.updateCharacterFeature('accessories', currentAccessories)
-  }
+// Select a feature for the character (single accessory only)
+const selectFeature = (featureType: 'accessories', feature: CharacterFeature) => {
+  // Umieść wybrany element jako jedyny w tablicy
+  characterStore.updateCharacterFeature(featureType, [feature])
 }
 </script>
 

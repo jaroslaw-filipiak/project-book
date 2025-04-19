@@ -51,6 +51,69 @@ import turbanSvg from '@/assets/svg/faces/Turban.svg?raw'
 import twistsSvg from '@/assets/svg/faces/Twists.svg?raw'
 import twists2Svg from '@/assets/svg/faces/Twists 2.svg?raw'
 
+// Face Expressions
+import angryWithFangSvg from '@/assets/svg/face/Angry with Fang.svg?raw'
+import aweSvg from '@/assets/svg/face/Awe.svg?raw'
+import blankSvg from '@/assets/svg/face/Blank.svg?raw'
+import calmSvg from '@/assets/svg/face/Calm.svg?raw'
+import cheekySvg from '@/assets/svg/face/Cheeky.svg?raw'
+import concernedFearSvg from '@/assets/svg/face/Concerned Fear.svg?raw'
+import concernedSvg from '@/assets/svg/face/Concerned.svg?raw'
+import contemptSvg from '@/assets/svg/face/Contempt.svg?raw'
+import cuteSvg from '@/assets/svg/face/Cute.svg?raw'
+import cyclopsSvg from '@/assets/svg/face/Cyclops.svg?raw'
+import drivenSvg from '@/assets/svg/face/Driven.svg?raw'
+import eatingHappySvg from '@/assets/svg/face/Eating Happy.svg?raw'
+import explainingSvg from '@/assets/svg/face/Explaining.svg?raw'
+import eyesClosedSvg from '@/assets/svg/face/Eyes Closed.svg?raw'
+import fearSvg from '@/assets/svg/face/Fear.svg?raw'
+import hecticSvg from '@/assets/svg/face/Hectic.svg?raw'
+import lovingGrin1Svg from '@/assets/svg/face/Loving Grin 1.svg?raw'
+import lovingGrin2Svg from '@/assets/svg/face/Loving Grin 2.svg?raw'
+import monsterSvg from '@/assets/svg/face/Monster.svg?raw'
+import oldSvg from '@/assets/svg/face/Old.svg?raw'
+import rageSvg from '@/assets/svg/face/Rage.svg?raw'
+import seriousSvg from '@/assets/svg/face/Serious.svg?raw'
+import smileBigSvg from '@/assets/svg/face/Smile Big.svg?raw'
+import smileLOLSvg from '@/assets/svg/face/Smile LOL.svg?raw'
+import smileTeethGapSvg from '@/assets/svg/face/Smile Teeth Gap.svg?raw'
+import smileSvg from '@/assets/svg/face/Smile.svg?raw'
+import solemnSvg from '@/assets/svg/face/Solemn.svg?raw'
+import suspiciousSvg from '@/assets/svg/face/Suspicious.svg?raw'
+import tiredSvg from '@/assets/svg/face/Tired.svg?raw'
+import veryAngrySvg from '@/assets/svg/face/Very Angry.svg?raw'
+
+// Facial Hair Options
+import chinSvg from '@/assets/svg/facial-hair/Chin.svg?raw'
+import full2Svg from '@/assets/svg/facial-hair/Full 2.svg?raw'
+import full3Svg from '@/assets/svg/facial-hair/Full 3.svg?raw'
+import full4Svg from '@/assets/svg/facial-hair/Full 4.svg?raw'
+import fullSvg from '@/assets/svg/facial-hair/Full.svg?raw'
+import goatee1Svg from '@/assets/svg/facial-hair/Goatee 1.svg?raw'
+import goatee2Svg from '@/assets/svg/facial-hair/Goatee 2.svg?raw'
+import moustache1Svg from '@/assets/svg/facial-hair/Moustache 1.svg?raw'
+import moustache2Svg from '@/assets/svg/facial-hair/Moustache 2.svg?raw'
+import moustache3Svg from '@/assets/svg/facial-hair/Moustache 3.svg?raw'
+import moustache4Svg from '@/assets/svg/facial-hair/Moustache 4.svg?raw'
+import moustache5Svg from '@/assets/svg/facial-hair/Moustache 5.svg?raw'
+import moustache6Svg from '@/assets/svg/facial-hair/Moustache 6.svg?raw'
+import moustache7Svg from '@/assets/svg/facial-hair/Moustache 7.svg?raw'
+import moustache8Svg from '@/assets/svg/facial-hair/Moustache 8.svg?raw'
+import moustache9Svg from '@/assets/svg/facial-hair/Moustache 9.svg?raw'
+import noneSvg from '@/assets/svg/facial-hair/_ None.svg?raw'
+
+// Accessories
+import noneAccSvg from '@/assets/svg/accessories/_ None.svg?raw'
+import eyepatchSvg from '@/assets/svg/accessories/Eyepatch.svg?raw'
+import glasses2Svg from '@/assets/svg/accessories/Glasses 2.svg?raw'
+import glasses3Svg from '@/assets/svg/accessories/Glasses 3.svg?raw'
+import glasses4Svg from '@/assets/svg/accessories/Glasses 4.svg?raw'
+import glasses5_1Svg from '@/assets/svg/accessories/Glasses 5-1.svg?raw'
+import glasses5Svg from '@/assets/svg/accessories/Glasses 5.svg?raw'
+import glassesSvg from '@/assets/svg/accessories/Glasses.svg?raw'
+import sunglasses2Svg from '@/assets/svg/accessories/Sunglasses 2.svg?raw'
+import sunglassesSvg from '@/assets/svg/accessories/Sunglasses.svg?raw'
+
 export const faceShapes = [
   {
     id: 'afro',
@@ -294,6 +357,328 @@ export const faceShapes = [
   },
 ]
 
+// Face expression options
+export const faceExpressionOptions = [
+  {
+    id: 'face_angry_fang',
+    name: 'Zły z kłem',
+    svg: angryWithFangSvg,
+  },
+  {
+    id: 'face_awe',
+    name: 'Zachwyt',
+    svg: aweSvg,
+  },
+  {
+    id: 'face_blank',
+    name: 'Pusty',
+    svg: blankSvg,
+  },
+  {
+    id: 'face_calm',
+    name: 'Spokojny',
+    svg: calmSvg,
+  },
+  {
+    id: 'face_cheeky',
+    name: 'Zuchwały',
+    svg: cheekySvg,
+  },
+  {
+    id: 'face_concerned_fear',
+    name: 'Zaniepokojony strach',
+    svg: concernedFearSvg,
+  },
+  {
+    id: 'face_concerned',
+    name: 'Zaniepokojony',
+    svg: concernedSvg,
+  },
+  {
+    id: 'face_contempt',
+    name: 'Pogarda',
+    svg: contemptSvg,
+  },
+  {
+    id: 'face_cute',
+    name: 'Uroczy',
+    svg: cuteSvg,
+  },
+  {
+    id: 'face_cyclops',
+    name: 'Cyklop',
+    svg: cyclopsSvg,
+  },
+  {
+    id: 'face_driven',
+    name: 'Zdeterminowany',
+    svg: drivenSvg,
+  },
+  {
+    id: 'face_eating_happy',
+    name: 'Jedzący szczęśliwy',
+    svg: eatingHappySvg,
+  },
+  {
+    id: 'face_explaining',
+    name: 'Wyjaśniający',
+    svg: explainingSvg,
+  },
+  {
+    id: 'face_eyes_closed',
+    name: 'Zamknięte oczy',
+    svg: eyesClosedSvg,
+  },
+  {
+    id: 'face_fear',
+    name: 'Strach',
+    svg: fearSvg,
+  },
+  {
+    id: 'face_hectic',
+    name: 'Gorączkowy',
+    svg: hecticSvg,
+  },
+  {
+    id: 'face_loving_grin_1',
+    name: 'Kochający uśmiech 1',
+    svg: lovingGrin1Svg,
+  },
+  {
+    id: 'face_loving_grin_2',
+    name: 'Kochający uśmiech 2',
+    svg: lovingGrin2Svg,
+  },
+  {
+    id: 'face_monster',
+    name: 'Potwór',
+    svg: monsterSvg,
+  },
+  {
+    id: 'face_old',
+    name: 'Stary',
+    svg: oldSvg,
+  },
+  {
+    id: 'face_rage',
+    name: 'Wściekłość',
+    svg: rageSvg,
+  },
+  {
+    id: 'face_serious',
+    name: 'Poważny',
+    svg: seriousSvg,
+  },
+  {
+    id: 'face_smile_big',
+    name: 'Duży uśmiech',
+    svg: smileBigSvg,
+  },
+  {
+    id: 'face_smile_lol',
+    name: 'Uśmiech LOL',
+    svg: smileLOLSvg,
+  },
+  {
+    id: 'face_smile_teeth_gap',
+    name: 'Uśmiech z przerwą w zębach',
+    svg: smileTeethGapSvg,
+  },
+  {
+    id: 'face_smile',
+    name: 'Uśmiech',
+    svg: smileSvg,
+  },
+  {
+    id: 'face_solemn',
+    name: 'Uroczysty',
+    svg: solemnSvg,
+  },
+  {
+    id: 'face_suspicious',
+    name: 'Podejrzliwy',
+    svg: suspiciousSvg,
+  },
+  {
+    id: 'face_tired',
+    name: 'Zmęczony',
+    svg: tiredSvg,
+  },
+  {
+    id: 'face_very_angry',
+    name: 'Bardzo zły',
+    svg: veryAngrySvg,
+  },
+]
+
+// Facial hair options
+export const facialHairOptions = [
+  {
+    id: 'facial_hair_none',
+    name: 'Brak zarostu',
+    svg: noneSvg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_full',
+    name: 'Pełna broda',
+    svg: fullSvg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_full_2',
+    name: 'Pełna broda 2',
+    svg: full2Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_full_3',
+    name: 'Pełna broda 3',
+    svg: full3Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_full_4',
+    name: 'Pełna broda 4',
+    svg: full4Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_chin',
+    name: 'Broda na brodzie',
+    svg: chinSvg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_goatee_1',
+    name: 'Kozia bródka 1',
+    svg: goatee1Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_goatee_2',
+    name: 'Kozia bródka 2',
+    svg: goatee2Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_1',
+    name: 'Wąsy 1',
+    svg: moustache1Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_2',
+    name: 'Wąsy 2',
+    svg: moustache2Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_3',
+    name: 'Wąsy 3',
+    svg: moustache3Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_4',
+    name: 'Wąsy 4',
+    svg: moustache4Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_5',
+    name: 'Wąsy 5',
+    svg: moustache5Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_6',
+    name: 'Wąsy 6',
+    svg: moustache6Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_7',
+    name: 'Wąsy 7',
+    svg: moustache7Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_8',
+    name: 'Wąsy 8',
+    svg: moustache8Svg,
+    forSex: 'male',
+  },
+  {
+    id: 'facial_hair_moustache_9',
+    name: 'Wąsy 9',
+    svg: moustache9Svg,
+    forSex: 'male',
+  },
+]
+
+// Accessory options
+export const accessoryOptions = [
+  {
+    id: 'accessory_none',
+    name: 'Brak',
+    svg: noneAccSvg,
+  },
+  {
+    id: 'accessory_eyepatch',
+    name: 'Opaska na oko',
+    svg: eyepatchSvg,
+  },
+  {
+    id: 'accessory_glasses',
+    name: 'Okulary',
+    svg: glassesSvg,
+  },
+  {
+    id: 'accessory_glasses_2',
+    name: 'Okulary 2',
+    svg: glasses2Svg,
+  },
+  {
+    id: 'accessory_glasses_3',
+    name: 'Okulary 3',
+    svg: glasses3Svg,
+  },
+  {
+    id: 'accessory_glasses_4',
+    name: 'Okulary 4',
+    svg: glasses4Svg,
+  },
+  {
+    id: 'accessory_glasses_5',
+    name: 'Okulary 5',
+    svg: glasses5Svg,
+  },
+  {
+    id: 'accessory_glasses_5_1',
+    name: 'Okulary 5-1',
+    svg: glasses5_1Svg,
+  },
+  {
+    id: 'accessory_sunglasses',
+    name: 'Okulary przeciwsłoneczne',
+    svg: sunglassesSvg,
+  },
+  {
+    id: 'accessory_sunglasses_2',
+    name: 'Okulary przeciwsłoneczne 2',
+    svg: sunglasses2Svg,
+  },
+  {
+    id: 'accessory_hat',
+    name: 'Kapelusz',
+    svg: `<svg width="100" height="50" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="25" rx="40" ry="10" fill="#444" />
+      <rect x="30" y="5" width="40" height="20" rx="5" fill="#444" />
+    </svg>`,
+  },
+]
+
 // Eyes
 export const eyesOptions = [
   {
@@ -451,31 +836,5 @@ export const bodyOptions = [
       <rect x="35" y="180" width="35" height="20" fill="#0000FF" />
       <rect x="80" y="180" width="35" height="20" fill="#0000FF" />
     </svg>`,
-  },
-]
-
-// Accessory options
-export const accessoryOptions = [
-  {
-    id: 'accessory_glasses',
-    name: 'Okulary',
-    svg: `<svg width="100" height="30" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="30" cy="15" r="15" fill="none" stroke="#000" stroke-width="2" />
-      <circle cx="70" cy="15" r="15" fill="none" stroke="#000" stroke-width="2" />
-      <path d="M45,15 L55,15" fill="none" stroke="#000" stroke-width="2" />
-    </svg>`,
-  },
-  {
-    id: 'accessory_hat',
-    name: 'Kapelusz',
-    svg: `<svg width="100" height="50" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="25" rx="40" ry="10" fill="#444" />
-      <rect x="30" y="5" width="40" height="20" rx="5" fill="#444" />
-    </svg>`,
-  },
-  {
-    id: 'accessory_none',
-    name: 'Brak',
-    svg: `<svg width="100" height="30" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg"></svg>`,
   },
 ]

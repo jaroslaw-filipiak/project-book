@@ -55,7 +55,16 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // Update specific character feature
   const updateCharacterFeature = (
-    featureType: 'head' | 'face' | 'facialHair' | 'body' | 'accessories' | 'eyes' | 'nose' | 'mouth' | 'hair',
+    featureType:
+      | 'head'
+      | 'face'
+      | 'facialHair'
+      | 'body'
+      | 'accessories'
+      | 'eyes'
+      | 'nose'
+      | 'mouth'
+      | 'hair',
     featureData: CharacterFeature | CharacterFeature[] | null,
   ) => {
     if (currentCharacterId.value) {

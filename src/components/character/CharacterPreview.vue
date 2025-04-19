@@ -1,59 +1,51 @@
 <template>
   <div class="character-preview" :style="{ transform: `scale(${scale})` }">
     <!-- Character preview with layered SVG elements -->
-    <div v-if="character" class="character-container">
-      <!-- Head shape layer (previously face) -->
-      <div
-        v-if="character.head"
-        class="head-layer scale-50 origin-center"
-        v-html="character.head?.svg"
-      ></div>
+    <div v-if="character" class="character-container relative">
+      <!-- Head shape layer -->
+      <div v-if="character.head" class="head-layer" v-html="character.head?.svg"></div>
 
-      <!-- Eyes layer -->
+      <!-- Face expression layer (from /face folder) -->
+      <div v-if="character.face" class="face-layer" v-html="character.face?.svg"></div>
+
+      <!-- Legacy support for individual facial features -->
       <div
-        v-if="character.eyes"
+        v-if="character.eyes && !character.face"
         class="eyes-layer absolute"
-        style="top: 40%; left: 50%; transform: translate(-50%, -50%)"
+        style="top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 5"
         v-html="character.eyes?.svg"
       ></div>
 
-      <!-- Nose layer -->
       <div
-        v-if="character.nose"
+        v-if="character.nose && !character.face"
         class="nose-layer absolute"
-        style="top: 55%; left: 50%; transform: translate(-50%, -50%)"
+        style="top: 55%; left: 50%; transform: translate(-50%, -50%); z-index: 5"
         v-html="character.nose?.svg"
       ></div>
 
-      <!-- Mouth layer -->
       <div
-        v-if="character.mouth"
+        v-if="character.mouth && !character.face"
         class="mouth-layer absolute"
-        style="top: 70%; left: 50%; transform: translate(-50%, -50%)"
+        style="top: 70%; left: 50%; transform: translate(-50%, -50%); z-index: 5"
         v-html="character.mouth?.svg"
       ></div>
 
       <!-- Facial Hair layer -->
       <div
         v-if="character.facialHair"
-        class="facial-hair-layer absolute"
-        style="top: 75%; left: 50%; transform: translate(-50%, -50%)"
+        class="facial-hair-layer"
         v-html="character.facialHair?.svg"
       ></div>
 
       <!-- Hair layer (kept for backward compatibility) -->
-      <div
-        v-if="character.hair"
-        class="hair-layer absolute inset-0"
-        v-html="character.hair?.svg"
-      ></div>
+      <div v-if="character.hair" class="hair-layer absolutez-20" v-html="character.hair?.svg"></div>
 
       <!-- Accessories layers (now multiple) -->
       <template v-if="character.accessories && character.accessories.length > 0">
         <div
           v-for="accessory in character.accessories"
           :key="accessory.id"
-          class="accessory-layer absolute inset-0"
+          class="accessory-layer absolute z-30"
           v-html="accessory.svg"
         ></div>
       </template>
@@ -90,4 +82,24 @@ const props = defineProps<{
 const scale = props.scale || 1
 </script>
 
-<style scoped></style>
+<style scoped>
+.character-container {
+  @apply w-full aspect-square;
+}
+
+.head-layer {
+  @apply absolute scale-50 origin-center left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-5;
+}
+
+.face-layer {
+  @apply absolute scale-50 origin-center left-[53%] top-[54%] transform -translate-x-1/2 -translate-y-1/2 z-20;
+}
+
+.facial-hair-layer {
+  @apply absolute scale-50 origin-bottom left-[51%] top-[47%] transform -translate-x-1/2 -translate-y-1/2 z-10;
+}
+
+.accessory-layer {
+  @apply absolute scale-50 origin-center left-[47%] top-[51%] transform -translate-x-1/2 -translate-y-1/2 z-5;
+}
+</style>

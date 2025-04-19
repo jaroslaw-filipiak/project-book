@@ -15,7 +15,6 @@
           @click="selectFeature('head', head)"
         >
           <div class="svg-container flex items-center justify-center p-10" v-html="head.svg"></div>
-          <div class="text-center text-sm">{{ head.name }}</div>
         </div>
       </div>
     </div>
